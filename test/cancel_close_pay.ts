@@ -3,14 +3,15 @@ import { getPaymentId } from "../src/helper";
 const URI = require("urijs");
 
 async function main() {
+    // const RELAY_ENDPOINT = "http://localhost:7070";
     const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
 
     const client = new HTTPClient();
     const paymentId = getPaymentId();
 
-    console.log("결제를 종료합니다.");
-    const url = URI(RELAY_ENDPOINT).directory("/v1/payment/new").filename("close").toString();
+    console.log("취소결제를 종료합니다.");
+    const url = URI(RELAY_ENDPOINT).directory("/v1/payment/cancel").filename("close").toString();
     const response = await client.post(url, {
         accessKey: ACCESS_KEY,
         paymentId,

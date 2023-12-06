@@ -7,8 +7,10 @@
         "test": "test"
     },
     "scripts": {
-        "open": "ts-node test/open_pay.ts",
-        "close": "ts-node test/close_pay.ts"
+        "new_open": "ts-node test/new_open_pay.ts",
+        "new_close": "ts-node test/new_close_pay.ts",
+        "cancel_open": "ts-node test/cancel_open_pay.ts",
+        "cancel_close": "ts-node test/cancel_close_pay.ts"
     },
     "repository": {
         "type": "git",

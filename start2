@@ -1,0 +1,7 @@
+#!/bin/bash
+
+npm run new_open
+
+sleep 7
+
+npm run new_close
