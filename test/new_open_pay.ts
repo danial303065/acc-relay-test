@@ -9,10 +9,10 @@ import * as fs from "fs";
 const URI = require("urijs");
 
 async function main() {
-    // const RELAY_ENDPOINT = "http://localhost:7070";
-    const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
+    const RELAY_ENDPOINT = "http://localhost:7070";
+    // const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
-    const account = "0x3FE8D00143bd0eAd2397D48ba0E31E5E1268dBfb";
+    const account = "0x74586E5B9BB8AA2c243acD2fBcA5481b266D7ACf";
     const shopData: IShopData[] = [];
 
     console.log("상점데이타를 로딩합니다.");

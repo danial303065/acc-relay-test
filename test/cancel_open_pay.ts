@@ -7,10 +7,10 @@ import { BigNumber } from "ethers";
 const URI = require("urijs");
 
 async function main() {
-    // const RELAY_ENDPOINT = "http://localhost:7070";
-    const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
+    const RELAY_ENDPOINT = "http://localhost:7070";
+    // const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
-    const account = "0x24dd2E8A8571090fDA4D92a9d94995E651B65640";
+    const account = "0x967614054b6906B39d449f53C0d8A7A3F4e50584";
 
     const paymentId = getPaymentId();
 
