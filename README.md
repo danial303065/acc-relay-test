@@ -2,7 +2,16 @@
 
 A server that receives transactions and then stores it in a blockchain
 
-## Installation
+## Install NodeJS
+https://nodejs.org/en/download
+
+## Install yarn
+
+```shell
+npm install -g yarn
+```
+
+## Install Program
 
 ```shell
 git clone https://github.com/MichaelKim20/dms-relay-test.git
