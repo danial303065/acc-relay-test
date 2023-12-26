@@ -132,4 +132,11 @@ dist
 
 # WebStorm
 .idea
+
+#Hardhat files
+cache
+artifacts
+/typechain-types/
+
+
 data/storage.json
