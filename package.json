@@ -12,7 +12,10 @@
         "new_close": "hardhat run scripts/payment/new_close_pay.ts",
         "cancel_open": "hardhat run scripts/payment/cancel_open_pay.ts",
         "cancel_close": "hardhat run scripts/payment/cancel_close_pay.ts",
-        "add_shop": "hardhat run scripts/shop/add_shop.ts --network production_net"
+        "add_shop": "hardhat run scripts/shop/add_shop.ts --network production_net",
+        "update_shop": "hardhat run scripts/shop/update_shop.ts",
+        "status_shop": "hardhat run scripts/shop/status_shop.ts",
+        "get_shop": "hardhat run scripts/shop/get_shop.ts"
     },
     "repository": {
         "type": "git",

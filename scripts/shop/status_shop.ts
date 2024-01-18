@@ -17,18 +17,15 @@ async function main() {
     console.log("파라메타를 생성합니다.");
     const shopIndex = 5;
     const shopId = shopData[shopIndex].shopId;
-    const newCurrency = "krw";
-    const newName = "New Name 5";
     const param = {
         accessKey: ACCESS_KEY,
         shopId,
-        name: newName,
-        currency: newCurrency,
+        status: 2,
     };
 
     console.log("상점 데이타의 변경을 요청합니다.");
     const client = new HTTPClient();
-    const url = URI(RELAY_ENDPOINT).directory("/v1/shop/update/create").toString();
+    const url = URI(RELAY_ENDPOINT).directory("/v1/shop/status/create").toString();
     const response = await client.post(url, param);
 
     console.log("처리결과입니다.");

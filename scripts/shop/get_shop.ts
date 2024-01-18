@@ -8,7 +8,6 @@ import * as fs from "fs";
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
-    const ACCESS_KEY = process.env.ACCESS_KEY;
     const shopData: IShopData[] = [];
 
     console.log("상점데이타를 로딩합니다.");
@@ -17,19 +16,11 @@ async function main() {
     console.log("파라메타를 생성합니다.");
     const shopIndex = 5;
     const shopId = shopData[shopIndex].shopId;
-    const newCurrency = "krw";
-    const newName = "New Name 5";
-    const param = {
-        accessKey: ACCESS_KEY,
-        shopId,
-        name: newName,
-        currency: newCurrency,
-    };
 
-    console.log("상점 데이타의 변경을 요청합니다.");
+    console.log("상점 정보를 요청합니다.");
     const client = new HTTPClient();
-    const url = URI(RELAY_ENDPOINT).directory("/v1/shop/update/create").toString();
-    const response = await client.post(url, param);
+    const url = URI(RELAY_ENDPOINT).directory("/v1/payment/shop/info").addQuery("shopId", shopId).toString();
+    const response = await client.get(url);
 
     console.log("처리결과입니다.");
     console.log(response.data.code);
