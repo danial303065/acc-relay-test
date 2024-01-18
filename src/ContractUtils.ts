@@ -1,4 +1,4 @@
-import { BigNumberish, BytesLike, ethers, Signer } from "ethers";
+import { BigNumber, BigNumberish, BytesLike, ethers, Signer } from "ethers";
 // tslint:disable-next-line:no-submodule-imports
 import { arrayify } from "ethers/lib/utils";
 import * as hre from "hardhat";
@@ -25,6 +25,10 @@ export class ContractUtils {
 
     public static getTimeStamp(): number {
         return Math.floor(new Date().getTime() / 1000);
+    }
+
+    public static getTimeStampBigInt(): bigint {
+        return BigInt(new Date().getTime()) / BigInt(10000);
     }
 
     public static delay(interval: number): Promise<void> {

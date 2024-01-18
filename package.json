@@ -15,7 +15,8 @@
         "add_shop": "hardhat run scripts/shop/add_shop.ts --network production_net",
         "update_shop": "hardhat run scripts/shop/update_shop.ts",
         "status_shop": "hardhat run scripts/shop/status_shop.ts",
-        "get_shop": "hardhat run scripts/shop/get_shop.ts"
+        "get_shop": "hardhat run scripts/shop/get_shop.ts",
+        "store_purchase": "hardhat run scripts/purchase/store.ts"
     },
     "repository": {
         "type": "git",
@@ -54,6 +55,7 @@
         "argparse": "^2.0.1",
         "assert": "^2.0.0",
         "axios": "^0.26.0",
+        "beautify": "^0.0.8",
         "body-parser": "^1.19.0",
         "chai": "^4.3.7",
         "chai-http": "^4.3.7",
