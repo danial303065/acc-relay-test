@@ -1,13 +1,13 @@
-import { BOACoin } from "../src/Amount";
-import { HTTPClient } from "../src/HttpClient";
-import { getPaymentId } from "../src/helper";
+import { BOACoin } from "../../src/Amount";
+import { HTTPClient } from "../../src/HttpClient";
+import { getPaymentId } from "../../src/helper";
 
 import { BigNumber } from "ethers";
 
 const URI = require("urijs");
 
 async function main() {
-    const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
 
     const paymentId = getPaymentId();

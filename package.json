@@ -8,11 +8,11 @@
     },
     "scripts": {
         "build": "hardhat compile",
-        "new_open": "ts-node test/new_open_pay.ts",
-        "new_close": "ts-node test/new_close_pay.ts",
-        "cancel_open": "ts-node test/cancel_open_pay.ts",
-        "cancel_close": "ts-node test/cancel_close_pay.ts",
-        "add_shop": "hardhat run test/add_shop.ts --network production_net"
+        "new_open": "hardhat run scripts/payment/new_open_pay.ts",
+        "new_close": "hardhat run scripts/payment/new_close_pay.ts",
+        "cancel_open": "hardhat run scripts/payment/cancel_open_pay.ts",
+        "cancel_close": "hardhat run scripts/payment/cancel_close_pay.ts",
+        "add_shop": "hardhat run scripts/shop/add_shop.ts --network production_net"
     },
     "repository": {
         "type": "git",

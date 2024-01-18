@@ -1,21 +1,20 @@
-import { IUserData } from "../src";
-import * as fs from "fs";
-
+import { IUserData } from "../../src";
+import { ContractUtils } from "../../src/ContractUtils";
+import { Shop } from "../../typechain-types";
+import { HTTPClient } from "../../src/HttpClient";
 import { Wallet } from "@ethersproject/wallet";
-import { ContractUtils } from "../src/ContractUtils";
-import { Shop } from "../typechain-types";
-const URI = require("urijs");
 
 import * as hre from "hardhat";
-import { HTTPClient } from "../src/HttpClient";
+const URI = require("urijs");
+import * as fs from "fs";
 
 async function getShopContract(): Promise<Shop> {
     const shopFactory = await hre.ethers.getContractFactory("Shop");
-    return shopFactory.attach("0xDb62De0aD297cfDa76EE80Cc909177aAF5C7f322");
+    return shopFactory.attach(process.env.SHOP_CONTRACT_ADDRESS || "");
 }
 
 async function main() {
-    const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070/";
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
     const userData: IUserData[] = [];
 
     console.log("사용자의 데이터를 로딩합니다.");

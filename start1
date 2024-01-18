@@ -1,15 +1,15 @@
 #!/bin/bash
 
-npm run new_open
+yarn run new_open
 
 sleep 8
 
-npm run new_close
+yarn run new_close
 
 sleep 1
 
-npm run cancel_open
+yarn run cancel_open
 
 sleep 8
 
-npm run cancel_close
+yarn run cancel_close

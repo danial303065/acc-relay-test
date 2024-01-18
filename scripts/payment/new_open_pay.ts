@@ -1,7 +1,7 @@
-import { Amount, BOACoin } from "../src/Amount";
-import { HTTPClient } from "../src/HttpClient";
-import { IShopData } from "../src";
-import { setPaymentId } from "../src/helper";
+import { Amount, BOACoin } from "../../src/Amount";
+import { HTTPClient } from "../../src/HttpClient";
+import { IShopData } from "../../src";
+import { setPaymentId } from "../../src/helper";
 
 import { BigNumber } from "ethers";
 import * as fs from "fs";
@@ -9,9 +9,9 @@ import * as fs from "fs";
 const URI = require("urijs");
 
 async function main() {
-    const RELAY_ENDPOINT = "http://relay.devnet.bosagora.org:7070";
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
-    const account = "0x74586E5B9BB8AA2c243acD2fBcA5481b266D7ACf";
+    const account = "0x14C17C2286324Db12A47bab0477D100dabB92b82";
     const shopData: IShopData[] = [];
 
     console.log("상점데이타를 로딩합니다.");
