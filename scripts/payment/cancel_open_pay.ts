@@ -7,18 +7,21 @@ import { BigNumber } from "ethers";
 const URI = require("urijs");
 
 async function main() {
-    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
 
     const paymentId = getPaymentId();
 
-    const client = new HTTPClient();
+    const client = new HTTPClient({
+        headers: {
+            Authorization: ACCESS_KEY,
+        },
+    });
 
     console.log("취소결제를 오픈합니다.");
     const url2 = URI(RELAY_ENDPOINT).directory("/v1/payment/cancel").filename("open").toString();
 
     const params = {
-        accessKey: ACCESS_KEY,
         paymentId,
     };
     const response2 = await client.post(url2, params);

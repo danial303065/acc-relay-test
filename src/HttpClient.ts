@@ -3,9 +3,11 @@ import { handleNetworkError } from "./ErrorTypes";
 
 export class HTTPClient {
     private client: AxiosInstance;
-    constructor() {
-        this.client = axios.create();
+
+    constructor(config?: AxiosRequestConfig) {
+        this.client = axios.create(config);
     }
+
     public get(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse> {
         return new Promise<AxiosResponse>((resolve, reject) => {
             this.client

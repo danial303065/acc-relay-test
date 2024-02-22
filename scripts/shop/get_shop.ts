@@ -7,7 +7,7 @@ const URI = require("urijs");
 import * as fs from "fs";
 
 async function main() {
-    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const shopData: IShopData[] = [];
 
     console.log("상점데이타를 로딩합니다.");

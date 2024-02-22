@@ -9,7 +9,7 @@ import * as fs from "fs";
 const URI = require("urijs");
 
 async function main() {
-    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
     const account = "0x14C17C2286324Db12A47bab0477D100dabB92b82";
     const shopData: IShopData[] = [];
@@ -18,7 +18,11 @@ async function main() {
     shopData.push(...(JSON.parse(fs.readFileSync("./data/shops.json", "utf8")) as IShopData[]));
 
     const shopIndex = Math.floor(Math.random() * shopData.length);
-    const client = new HTTPClient();
+    const client = new HTTPClient({
+        headers: {
+            Authorization: ACCESS_KEY,
+        },
+    });
     const purchase = {
         purchaseId: "P000001",
         amount: Amount.make(10, 18).value,
@@ -49,7 +53,6 @@ async function main() {
     const url2 = URI(RELAY_ENDPOINT).directory("/v1/payment/new").filename("open").toString();
 
     const params = {
-        accessKey: ACCESS_KEY,
         purchaseId: purchase.purchaseId,
         amount: purchase.amount.toString(),
         currency: "krw",

@@ -5,9 +5,10 @@ import { ContractUtils } from "../../src/ContractUtils";
 const URI = require("urijs");
 import * as fs from "fs";
 const beautify = require("beautify");
+
 async function main() {
-    const STORE_PURCHASE_ENDPOINT = process.env.STORE_PURCHASE_ENDPOINT;
-    const ACCESS_KEY = process.env.STORE_PURCHASE_ACCESS_KEY;
+    const STORE_PURCHASE_ENDPOINT = process.env.STORE_PURCHASE_ENDPOINT || "";
+    const ACCESS_KEY = process.env.STORE_PURCHASE_ACCESS_KEY || "";
     const shops: IShopData[] = [];
     const products: IProductData[] = [];
     const users: IUserData[] = [];
@@ -83,9 +84,13 @@ async function main() {
     const tx = await makeTransactions();
 
     console.log("구매정보를 전달합니다.");
-    const client = new HTTPClient();
+    const client = new HTTPClient({
+        headers: {
+            Authorization: ACCESS_KEY,
+        },
+    });
     const url = URI(STORE_PURCHASE_ENDPOINT).directory("/v1/tx/purchase").filename("new").toString();
-    const response = await client.post(url, { accessKey: ACCESS_KEY, ...tx });
+    const response = await client.post(url, tx);
 
     console.log("처리결과입니다.");
     console.log(response.data.code);

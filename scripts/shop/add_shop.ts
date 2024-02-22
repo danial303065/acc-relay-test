@@ -14,7 +14,7 @@ async function getShopContract(): Promise<Shop> {
 }
 
 async function main() {
-    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const userData: IUserData[] = [];
 
     console.log("사용자의 데이터를 로딩합니다.");

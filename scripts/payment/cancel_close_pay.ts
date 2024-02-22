@@ -3,16 +3,19 @@ import { getPaymentId } from "../../src/helper";
 const URI = require("urijs");
 
 async function main() {
-    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT;
+    const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const ACCESS_KEY = "0x2c93e943c0d7f6f1a42f53e116c52c40fe5c1b428506dc04b290f2a77580a342";
 
-    const client = new HTTPClient();
+    const client = new HTTPClient({
+        headers: {
+            Authorization: ACCESS_KEY,
+        },
+    });
     const paymentId = getPaymentId();
 
     console.log("취소결제를 종료합니다.");
     const url = URI(RELAY_ENDPOINT).directory("/v1/payment/cancel").filename("close").toString();
     const response = await client.post(url, {
-        accessKey: ACCESS_KEY,
         paymentId,
         confirm: true,
     });
