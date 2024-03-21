@@ -41,6 +41,7 @@ export declare namespace IShop {
     name: PromiseOrValue<string>;
     currency: PromiseOrValue<string>;
     account: PromiseOrValue<string>;
+    delegator: PromiseOrValue<string>;
     providedAmount: PromiseOrValue<BigNumberish>;
     usedAmount: PromiseOrValue<BigNumberish>;
     settledAmount: PromiseOrValue<BigNumberish>;
@@ -52,6 +53,7 @@ export declare namespace IShop {
   };
 
   export type ShopDataStructOutput = [
+    string,
     string,
     string,
     string,
@@ -69,6 +71,7 @@ export declare namespace IShop {
     name: string;
     currency: string;
     account: string;
+    delegator: string;
     providedAmount: BigNumber;
     usedAmount: BigNumber;
     settledAmount: BigNumber;
@@ -86,6 +89,8 @@ export interface IShopInterface extends utils.Interface {
     "addSettledAmount(bytes32,uint256,string)": FunctionFragment;
     "addUsedAmount(bytes32,uint256,string,bytes32)": FunctionFragment;
     "getSettlementAmount(bytes32)": FunctionFragment;
+    "getShopsCountOfAccount(address)": FunctionFragment;
+    "getShopsOfAccount(address,uint256,uint256)": FunctionFragment;
     "isAvailableId(bytes32)": FunctionFragment;
     "nonceOf(address)": FunctionFragment;
     "shopOf(bytes32)": FunctionFragment;
@@ -99,6 +104,8 @@ export interface IShopInterface extends utils.Interface {
       | "addSettledAmount"
       | "addUsedAmount"
       | "getSettlementAmount"
+      | "getShopsCountOfAccount"
+      | "getShopsOfAccount"
       | "isAvailableId"
       | "nonceOf"
       | "shopOf"
@@ -134,6 +141,18 @@ export interface IShopInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getSettlementAmount",
     values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getShopsCountOfAccount",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getShopsOfAccount",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "isAvailableId",
@@ -175,6 +194,14 @@ export interface IShopInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getSettlementAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getShopsCountOfAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getShopsOfAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -249,6 +276,18 @@ export interface IShop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
     isAvailableId(
       _shopId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -305,6 +344,18 @@ export interface IShop extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getShopsCountOfAccount(
+    _account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getShopsOfAccount(
+    _account: PromiseOrValue<string>,
+    _from: PromiseOrValue<BigNumberish>,
+    _to: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
   isAvailableId(
     _shopId: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
@@ -360,6 +411,18 @@ export interface IShop extends BaseContract {
       _shopId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
 
     isAvailableId(
       _shopId: PromiseOrValue<BytesLike>,
@@ -420,6 +483,18 @@ export interface IShop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isAvailableId(
       _shopId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -474,6 +549,18 @@ export interface IShop extends BaseContract {
 
     getSettlementAmount(
       _shopId: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

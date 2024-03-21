@@ -59,14 +59,12 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
     "isAvailable(bytes32)": FunctionFragment;
     "nonceOf(address)": FunctionFragment;
     "owner()": FunctionFragment;
-    "pause()": FunctionFragment;
-    "paused()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
+    "remove(address,bytes)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "toAddress(bytes32)": FunctionFragment;
     "toPhone(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "unpause()": FunctionFragment;
     "updateEndpoint(string)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -88,14 +86,12 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
       | "isAvailable"
       | "nonceOf"
       | "owner"
-      | "pause"
-      | "paused"
       | "proxiableUUID"
+      | "remove"
       | "renounceOwnership"
       | "toAddress"
       | "toPhone"
       | "transferOwnership"
-      | "unpause"
       | "updateEndpoint"
       | "upgradeTo"
       | "upgradeToAndCall"
@@ -153,11 +149,13 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "remove",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -175,7 +173,6 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "updateEndpoint",
     values: [PromiseOrValue<string>]
@@ -227,12 +224,11 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "nonceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "remove", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
@@ -243,7 +239,6 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateEndpoint",
     data: BytesLike
@@ -265,9 +260,8 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Paused(address)": EventFragment;
     "RejectedRequestItem(bytes32,bytes32,address)": EventFragment;
-    "Unpaused(address)": EventFragment;
+    "RemovedItem(bytes32,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -277,9 +271,8 @@ export interface PhoneLinkCollectionInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RejectedRequestItem"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RemovedItem"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -349,13 +342,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
-export interface PausedEventObject {
-  account: string;
-}
-export type PausedEvent = TypedEvent<[string], PausedEventObject>;
-
-export type PausedEventFilter = TypedEventFilter<PausedEvent>;
-
 export interface RejectedRequestItemEventObject {
   id: string;
   phone: string;
@@ -369,12 +355,16 @@ export type RejectedRequestItemEvent = TypedEvent<
 export type RejectedRequestItemEventFilter =
   TypedEventFilter<RejectedRequestItemEvent>;
 
-export interface UnpausedEventObject {
-  account: string;
+export interface RemovedItemEventObject {
+  phone: string;
+  wallet: string;
 }
-export type UnpausedEvent = TypedEvent<[string], UnpausedEventObject>;
+export type RemovedItemEvent = TypedEvent<
+  [string, string],
+  RemovedItemEventObject
+>;
 
-export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>;
+export type RemovedItemEventFilter = TypedEventFilter<RemovedItemEvent>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -465,13 +455,13 @@ export interface PhoneLinkCollection extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
-    pause(
+    proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
+
+    remove(
+      _wallet: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    paused(overrides?: CallOverrides): Promise<[boolean]>;
-
-    proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -489,10 +479,6 @@ export interface PhoneLinkCollection extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -573,13 +559,13 @@ export interface PhoneLinkCollection extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  pause(
+  proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+  remove(
+    _wallet: PromiseOrValue<string>,
+    _signature: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  paused(overrides?: CallOverrides): Promise<boolean>;
-
-  proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -597,10 +583,6 @@ export interface PhoneLinkCollection extends BaseContract {
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -681,11 +663,13 @@ export interface PhoneLinkCollection extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    pause(overrides?: CallOverrides): Promise<void>;
-
-    paused(overrides?: CallOverrides): Promise<boolean>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+    remove(
+      _wallet: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -703,8 +687,6 @@ export interface PhoneLinkCollection extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    unpause(overrides?: CallOverrides): Promise<void>;
 
     updateEndpoint(
       _endpoint: PromiseOrValue<string>,
@@ -779,9 +761,6 @@ export interface PhoneLinkCollection extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
-    "Paused(address)"(account?: null): PausedEventFilter;
-    Paused(account?: null): PausedEventFilter;
-
     "RejectedRequestItem(bytes32,bytes32,address)"(
       id?: null,
       phone?: null,
@@ -793,8 +772,11 @@ export interface PhoneLinkCollection extends BaseContract {
       wallet?: null
     ): RejectedRequestItemEventFilter;
 
-    "Unpaused(address)"(account?: null): UnpausedEventFilter;
-    Unpaused(account?: null): UnpausedEventFilter;
+    "RemovedItem(bytes32,address)"(
+      phone?: null,
+      wallet?: null
+    ): RemovedItemEventFilter;
+    RemovedItem(phone?: null, wallet?: null): RemovedItemEventFilter;
 
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
@@ -858,13 +840,13 @@ export interface PhoneLinkCollection extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    pause(
+    proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    remove(
+      _wallet: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    paused(overrides?: CallOverrides): Promise<BigNumber>;
-
-    proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -882,10 +864,6 @@ export interface PhoneLinkCollection extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -969,13 +947,13 @@ export interface PhoneLinkCollection extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    pause(
+    proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    remove(
+      _wallet: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
-
-    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -993,10 +971,6 @@ export interface PhoneLinkCollection extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

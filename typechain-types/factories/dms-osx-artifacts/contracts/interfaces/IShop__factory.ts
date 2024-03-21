@@ -106,6 +106,54 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_account",
+        type: "address",
+      },
+    ],
+    name: "getShopsCountOfAccount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_from",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_to",
+        type: "uint256",
+      },
+    ],
+    name: "getShopsOfAccount",
+    outputs: [
+      {
+        internalType: "bytes32[]",
+        name: "",
+        type: "bytes32[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes32",
         name: "_shopId",
         type: "bytes32",
@@ -171,6 +219,11 @@ const _abi = [
           {
             internalType: "address",
             name: "account",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "delegator",
             type: "address",
           },
           {

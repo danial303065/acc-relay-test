@@ -6,7 +6,7 @@ import * as fs from "fs";
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
-    const ACCESS_KEY = process.env.ACCESS_KEY || "";
+    const ACCESS_KEY = process.env.RELAY_ACCESS_KEY || "";
     const shopData: IShopData[] = [];
 
     console.log("상점데이타를 로딩합니다.");

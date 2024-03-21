@@ -77,6 +77,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
+      name: "IERC165",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC165__factory>;
+    getContractFactory(
       name: "IPhoneLinkCollection",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IPhoneLinkCollection__factory>;
@@ -88,6 +92,10 @@ declare module "hardhat/types/runtime" {
       name: "PhoneStorage",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PhoneStorage__factory>;
+    getContractFactory(
+      name: "IBridgeLiquidity",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IBridgeLiquidity__factory>;
     getContractFactory(
       name: "Certifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -104,10 +112,6 @@ declare module "hardhat/types/runtime" {
       name: "LoyaltyProvider",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.LoyaltyProvider__factory>;
-    getContractFactory(
-      name: "LoyaltyProviderStorage",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.LoyaltyProviderStorage__factory>;
     getContractFactory(
       name: "CurrencyRate",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -145,6 +149,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.LedgerStorage__factory>;
     getContractFactory(
+      name: "DMS",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DMS__factory>;
+    getContractFactory(
       name: "Shop",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Shop__factory>;
@@ -164,6 +172,30 @@ declare module "hardhat/types/runtime" {
       name: "ValidatorStorage",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ValidatorStorage__factory>;
+    getContractFactory(
+      name: "BIP20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BIP20__factory>;
+    getContractFactory(
+      name: "BIP20DelegatedTransfer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BIP20DelegatedTransfer__factory>;
+    getContractFactory(
+      name: "IBIP20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IBIP20__factory>;
+    getContractFactory(
+      name: "IBIP20DelegatedTransfer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IBIP20DelegatedTransfer__factory>;
+    getContractFactory(
+      name: "LoyaltyToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.LoyaltyToken__factory>;
+    getContractFactory(
+      name: "IMultiSigWallet",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMultiSigWallet__factory>;
 
     getContractAt(
       name: "AccessControlUpgradeable",
@@ -246,6 +278,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
+      name: "IERC165",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC165>;
+    getContractAt(
       name: "IPhoneLinkCollection",
       address: string,
       signer?: ethers.Signer
@@ -260,6 +297,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.PhoneStorage>;
+    getContractAt(
+      name: "IBridgeLiquidity",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IBridgeLiquidity>;
     getContractAt(
       name: "Certifier",
       address: string,
@@ -280,11 +322,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.LoyaltyProvider>;
-    getContractAt(
-      name: "LoyaltyProviderStorage",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.LoyaltyProviderStorage>;
     getContractAt(
       name: "CurrencyRate",
       address: string,
@@ -331,6 +368,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.LedgerStorage>;
     getContractAt(
+      name: "DMS",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DMS>;
+    getContractAt(
       name: "Shop",
       address: string,
       signer?: ethers.Signer
@@ -355,6 +397,36 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ValidatorStorage>;
+    getContractAt(
+      name: "BIP20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BIP20>;
+    getContractAt(
+      name: "BIP20DelegatedTransfer",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BIP20DelegatedTransfer>;
+    getContractAt(
+      name: "IBIP20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IBIP20>;
+    getContractAt(
+      name: "IBIP20DelegatedTransfer",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IBIP20DelegatedTransfer>;
+    getContractAt(
+      name: "LoyaltyToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.LoyaltyToken>;
+    getContractAt(
+      name: "IMultiSigWallet",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMultiSigWallet>;
 
     // default types
     getContractFactory(

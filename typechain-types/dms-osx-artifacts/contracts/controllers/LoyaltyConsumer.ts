@@ -35,6 +35,7 @@ export declare namespace LoyaltyConsumerStorage {
     currency: PromiseOrValue<string>;
     shopId: PromiseOrValue<BytesLike>;
     account: PromiseOrValue<string>;
+    secretLock: PromiseOrValue<BytesLike>;
     timestamp: PromiseOrValue<BigNumberish>;
     loyaltyType: PromiseOrValue<BigNumberish>;
     paidPoint: PromiseOrValue<BigNumberish>;
@@ -48,6 +49,7 @@ export declare namespace LoyaltyConsumerStorage {
   };
 
   export type LoyaltyPaymentDataStructOutput = [
+    string,
     string,
     string,
     string,
@@ -69,6 +71,7 @@ export declare namespace LoyaltyConsumerStorage {
     currency: string;
     shopId: string;
     account: string;
+    secretLock: string;
     timestamp: BigNumber;
     loyaltyType: number;
     paidPoint: BigNumber;
@@ -91,12 +94,14 @@ export declare namespace LoyaltyConsumer {
     shopId: PromiseOrValue<BytesLike>;
     account: PromiseOrValue<string>;
     signature: PromiseOrValue<BytesLike>;
+    secretLock: PromiseOrValue<BytesLike>;
   };
 
   export type LoyaltyPaymentInputDataStructOutput = [
     string,
     string,
     BigNumber,
+    string,
     string,
     string,
     string,
@@ -109,18 +114,19 @@ export declare namespace LoyaltyConsumer {
     shopId: string;
     account: string;
     signature: string;
+    secretLock: string;
   };
 }
 
 export interface LoyaltyConsumerInterface extends utils.Interface {
   functions: {
-    "closeCancelLoyaltyPayment(bytes32,bool)": FunctionFragment;
-    "closeNewLoyaltyPayment(bytes32,bool)": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
+    "closeCancelLoyaltyPayment(bytes32,bytes32,bool)": FunctionFragment;
+    "closeNewLoyaltyPayment(bytes32,bytes32,bool)": FunctionFragment;
+    "initialize(address)": FunctionFragment;
     "isAvailablePaymentId(bytes32)": FunctionFragment;
     "loyaltyPaymentOf(bytes32)": FunctionFragment;
-    "openCancelLoyaltyPayment(bytes32,bytes)": FunctionFragment;
-    "openNewLoyaltyPayment((bytes32,string,uint256,string,bytes32,address,bytes))": FunctionFragment;
+    "openCancelLoyaltyPayment(bytes32,bytes32,bytes)": FunctionFragment;
+    "openNewLoyaltyPayment((bytes32,string,uint256,string,bytes32,address,bytes,bytes32))": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
@@ -152,15 +158,23 @@ export interface LoyaltyConsumerInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "closeCancelLoyaltyPayment",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<boolean>]
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "closeNewLoyaltyPayment",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<boolean>]
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "isAvailablePaymentId",
@@ -172,7 +186,11 @@ export interface LoyaltyConsumerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "openCancelLoyaltyPayment",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "openNewLoyaltyPayment",
@@ -379,18 +397,19 @@ export interface LoyaltyConsumer extends BaseContract {
   functions: {
     closeCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     closeNewLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     initialize(
-      _certifierAddress: PromiseOrValue<string>,
       _currencyRateAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -407,6 +426,7 @@ export interface LoyaltyConsumer extends BaseContract {
 
     openCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secretLock: PromiseOrValue<BytesLike>,
       _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -453,18 +473,19 @@ export interface LoyaltyConsumer extends BaseContract {
 
   closeCancelLoyaltyPayment(
     _paymentId: PromiseOrValue<BytesLike>,
+    _secret: PromiseOrValue<BytesLike>,
     _confirm: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   closeNewLoyaltyPayment(
     _paymentId: PromiseOrValue<BytesLike>,
+    _secret: PromiseOrValue<BytesLike>,
     _confirm: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   initialize(
-    _certifierAddress: PromiseOrValue<string>,
     _currencyRateAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -481,6 +502,7 @@ export interface LoyaltyConsumer extends BaseContract {
 
   openCancelLoyaltyPayment(
     _paymentId: PromiseOrValue<BytesLike>,
+    _secretLock: PromiseOrValue<BytesLike>,
     _signature: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -527,18 +549,19 @@ export interface LoyaltyConsumer extends BaseContract {
   callStatic: {
     closeCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     closeNewLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     initialize(
-      _certifierAddress: PromiseOrValue<string>,
       _currencyRateAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -555,6 +578,7 @@ export interface LoyaltyConsumer extends BaseContract {
 
     openCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secretLock: PromiseOrValue<BytesLike>,
       _signature: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -667,18 +691,19 @@ export interface LoyaltyConsumer extends BaseContract {
   estimateGas: {
     closeCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     closeNewLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     initialize(
-      _certifierAddress: PromiseOrValue<string>,
       _currencyRateAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -695,6 +720,7 @@ export interface LoyaltyConsumer extends BaseContract {
 
     openCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secretLock: PromiseOrValue<BytesLike>,
       _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -742,18 +768,19 @@ export interface LoyaltyConsumer extends BaseContract {
   populateTransaction: {
     closeCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     closeNewLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secret: PromiseOrValue<BytesLike>,
       _confirm: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _certifierAddress: PromiseOrValue<string>,
       _currencyRateAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -770,6 +797,7 @@ export interface LoyaltyConsumer extends BaseContract {
 
     openCancelLoyaltyPayment(
       _paymentId: PromiseOrValue<BytesLike>,
+      _secretLock: PromiseOrValue<BytesLike>,
       _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

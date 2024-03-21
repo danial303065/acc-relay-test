@@ -4,4 +4,3 @@
 export type { LoyaltyConsumer } from "./LoyaltyConsumer";
 export type { LoyaltyExchanger } from "./LoyaltyExchanger";
 export type { LoyaltyProvider } from "./LoyaltyProvider";
-export type { LoyaltyProviderStorage } from "./LoyaltyProviderStorage";

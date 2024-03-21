@@ -53,7 +53,6 @@ export interface ValidatorInterface extends utils.Interface {
   functions: {
     "MINIMUM_DEPOSIT_AMOUNT()": FunctionFragment;
     "deposit(uint256)": FunctionFragment;
-    "exit()": FunctionFragment;
     "initialize(address,address[])": FunctionFragment;
     "isActiveValidator(address)": FunctionFragment;
     "isCurrentActiveValidator(address)": FunctionFragment;
@@ -64,8 +63,6 @@ export interface ValidatorInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "requestExit(address)": FunctionFragment;
-    "requestRegistration()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -76,7 +73,6 @@ export interface ValidatorInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "MINIMUM_DEPOSIT_AMOUNT"
       | "deposit"
-      | "exit"
       | "initialize"
       | "isActiveValidator"
       | "isCurrentActiveValidator"
@@ -87,8 +83,6 @@ export interface ValidatorInterface extends utils.Interface {
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
-      | "requestExit"
-      | "requestRegistration"
       | "transferOwnership"
       | "upgradeTo"
       | "upgradeToAndCall"
@@ -103,7 +97,6 @@ export interface ValidatorInterface extends utils.Interface {
     functionFragment: "deposit",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "exit", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [PromiseOrValue<string>, PromiseOrValue<string>[]]
@@ -142,14 +135,6 @@ export interface ValidatorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "requestExit",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "requestRegistration",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
@@ -171,7 +156,6 @@ export interface ValidatorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "exit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isActiveValidator",
@@ -204,14 +188,6 @@ export interface ValidatorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "requestExit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "requestRegistration",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
@@ -230,11 +206,8 @@ export interface ValidatorInterface extends utils.Interface {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "DepositedForValidator(address,uint256,uint256)": EventFragment;
-    "ExitedFromValidator(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "RequestedToExitValidator(address,address)": EventFragment;
-    "RequestedToJoinValidator(address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -242,11 +215,8 @@ export interface ValidatorInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DepositedForValidator"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExitedFromValidator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RequestedToExitValidator"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RequestedToJoinValidator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -297,17 +267,6 @@ export type DepositedForValidatorEvent = TypedEvent<
 export type DepositedForValidatorEventFilter =
   TypedEventFilter<DepositedForValidatorEvent>;
 
-export interface ExitedFromValidatorEventObject {
-  validator: string;
-}
-export type ExitedFromValidatorEvent = TypedEvent<
-  [string],
-  ExitedFromValidatorEventObject
->;
-
-export type ExitedFromValidatorEventFilter =
-  TypedEventFilter<ExitedFromValidatorEvent>;
-
 export interface InitializedEventObject {
   version: number;
 }
@@ -326,29 +285,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
-
-export interface RequestedToExitValidatorEventObject {
-  requester: string;
-  validator: string;
-}
-export type RequestedToExitValidatorEvent = TypedEvent<
-  [string, string],
-  RequestedToExitValidatorEventObject
->;
-
-export type RequestedToExitValidatorEventFilter =
-  TypedEventFilter<RequestedToExitValidatorEvent>;
-
-export interface RequestedToJoinValidatorEventObject {
-  requester: string;
-}
-export type RequestedToJoinValidatorEvent = TypedEvent<
-  [string],
-  RequestedToJoinValidatorEventObject
->;
-
-export type RequestedToJoinValidatorEventFilter =
-  TypedEventFilter<RequestedToJoinValidatorEvent>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -391,10 +327,6 @@ export interface Validator extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    exit(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     initialize(
       _tokenAddress: PromiseOrValue<string>,
       _validators: PromiseOrValue<string>[],
@@ -432,15 +364,6 @@ export interface Validator extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    requestExit(
-      validator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    requestRegistration(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -467,10 +390,6 @@ export interface Validator extends BaseContract {
 
   deposit(
     _amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  exit(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -509,15 +428,6 @@ export interface Validator extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  requestExit(
-    validator: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  requestRegistration(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   transferOwnership(
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -546,8 +456,6 @@ export interface Validator extends BaseContract {
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    exit(overrides?: CallOverrides): Promise<void>;
 
     initialize(
       _tokenAddress: PromiseOrValue<string>,
@@ -583,13 +491,6 @@ export interface Validator extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    requestExit(
-      validator: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    requestRegistration(overrides?: CallOverrides): Promise<void>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -654,11 +555,6 @@ export interface Validator extends BaseContract {
       balance?: null
     ): DepositedForValidatorEventFilter;
 
-    "ExitedFromValidator(address)"(
-      validator?: null
-    ): ExitedFromValidatorEventFilter;
-    ExitedFromValidator(validator?: null): ExitedFromValidatorEventFilter;
-
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
@@ -670,22 +566,6 @@ export interface Validator extends BaseContract {
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
-
-    "RequestedToExitValidator(address,address)"(
-      requester?: null,
-      validator?: null
-    ): RequestedToExitValidatorEventFilter;
-    RequestedToExitValidator(
-      requester?: null,
-      validator?: null
-    ): RequestedToExitValidatorEventFilter;
-
-    "RequestedToJoinValidator(address)"(
-      requester?: null
-    ): RequestedToJoinValidatorEventFilter;
-    RequestedToJoinValidator(
-      requester?: null
-    ): RequestedToJoinValidatorEventFilter;
 
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
@@ -700,10 +580,6 @@ export interface Validator extends BaseContract {
 
     deposit(
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    exit(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -744,15 +620,6 @@ export interface Validator extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    requestExit(
-      validator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    requestRegistration(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -782,10 +649,6 @@ export interface Validator extends BaseContract {
 
     deposit(
       _amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    exit(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -825,15 +688,6 @@ export interface Validator extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    requestExit(
-      validator: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    requestRegistration(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

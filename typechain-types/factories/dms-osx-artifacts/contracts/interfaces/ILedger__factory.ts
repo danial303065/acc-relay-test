@@ -53,6 +53,42 @@ const _abi = [
         name: "_account",
         type: "address",
       },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+    ],
+    name: "burnPoint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_phone",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint256",
+        name: "_amount",
+        type: "uint256",
+      },
+    ],
+    name: "burnUnPayablePoint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_account",
+        type: "address",
+      },
     ],
     name: "changeToLoyaltyToken",
     outputs: [],
@@ -119,6 +155,32 @@ const _abi = [
   {
     inputs: [],
     name: "getSettlementAccount",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTokenAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTxFeeAccount",
     outputs: [
       {
         internalType: "address",
@@ -231,6 +293,11 @@ const _abi = [
         name: "_shopId",
         type: "bytes32",
       },
+      {
+        internalType: "address",
+        name: "_sender",
+        type: "address",
+      },
     ],
     name: "providePoint",
     outputs: [],
@@ -269,6 +336,11 @@ const _abi = [
         name: "_shopId",
         type: "bytes32",
       },
+      {
+        internalType: "address",
+        name: "_sender",
+        type: "address",
+      },
     ],
     name: "provideToken",
     outputs: [],
@@ -306,6 +378,11 @@ const _abi = [
         internalType: "bytes32",
         name: "_shopId",
         type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "_sender",
+        type: "address",
       },
     ],
     name: "provideUnPayablePoint",
@@ -408,7 +485,7 @@ const _abi = [
     inputs: [
       {
         internalType: "bytes32",
-        name: "_hash",
+        name: "_phone",
         type: "bytes32",
       },
     ],

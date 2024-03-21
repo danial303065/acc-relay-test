@@ -22,26 +22,44 @@ import type {
 export interface LedgerStorageInterface extends utils.Interface {
   functions: {
     "MAX_FEE()": FunctionFragment;
+    "bridgeAddress()": FunctionFragment;
+    "burnerAddress()": FunctionFragment;
     "consumerAddress()": FunctionFragment;
     "exchangerAddress()": FunctionFragment;
     "feeAccount()": FunctionFragment;
     "foundationAccount()": FunctionFragment;
     "providerAddress()": FunctionFragment;
     "settlementAccount()": FunctionFragment;
+    "tokenAddress()": FunctionFragment;
+    "transferAddress()": FunctionFragment;
+    "txFeeAccount()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "MAX_FEE"
+      | "bridgeAddress"
+      | "burnerAddress"
       | "consumerAddress"
       | "exchangerAddress"
       | "feeAccount"
       | "foundationAccount"
       | "providerAddress"
       | "settlementAccount"
+      | "tokenAddress"
+      | "transferAddress"
+      | "txFeeAccount"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "MAX_FEE", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "bridgeAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnerAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "consumerAddress",
     values?: undefined
@@ -66,8 +84,28 @@ export interface LedgerStorageInterface extends utils.Interface {
     functionFragment: "settlementAccount",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "tokenAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "txFeeAccount",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(functionFragment: "MAX_FEE", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "bridgeAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "burnerAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "consumerAddress",
     data: BytesLike
@@ -87,6 +125,18 @@ export interface LedgerStorageInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "settlementAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "tokenAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "txFeeAccount",
     data: BytesLike
   ): Result;
 
@@ -122,6 +172,10 @@ export interface LedgerStorage extends BaseContract {
   functions: {
     MAX_FEE(overrides?: CallOverrides): Promise<[number]>;
 
+    bridgeAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<[string]>;
+
     consumerAddress(overrides?: CallOverrides): Promise<[string]>;
 
     exchangerAddress(overrides?: CallOverrides): Promise<[string]>;
@@ -133,9 +187,19 @@ export interface LedgerStorage extends BaseContract {
     providerAddress(overrides?: CallOverrides): Promise<[string]>;
 
     settlementAccount(overrides?: CallOverrides): Promise<[string]>;
+
+    tokenAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    transferAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    txFeeAccount(overrides?: CallOverrides): Promise<[string]>;
   };
 
   MAX_FEE(overrides?: CallOverrides): Promise<number>;
+
+  bridgeAddress(overrides?: CallOverrides): Promise<string>;
+
+  burnerAddress(overrides?: CallOverrides): Promise<string>;
 
   consumerAddress(overrides?: CallOverrides): Promise<string>;
 
@@ -149,8 +213,18 @@ export interface LedgerStorage extends BaseContract {
 
   settlementAccount(overrides?: CallOverrides): Promise<string>;
 
+  tokenAddress(overrides?: CallOverrides): Promise<string>;
+
+  transferAddress(overrides?: CallOverrides): Promise<string>;
+
+  txFeeAccount(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     MAX_FEE(overrides?: CallOverrides): Promise<number>;
+
+    bridgeAddress(overrides?: CallOverrides): Promise<string>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<string>;
 
     consumerAddress(overrides?: CallOverrides): Promise<string>;
 
@@ -163,12 +237,22 @@ export interface LedgerStorage extends BaseContract {
     providerAddress(overrides?: CallOverrides): Promise<string>;
 
     settlementAccount(overrides?: CallOverrides): Promise<string>;
+
+    tokenAddress(overrides?: CallOverrides): Promise<string>;
+
+    transferAddress(overrides?: CallOverrides): Promise<string>;
+
+    txFeeAccount(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {};
 
   estimateGas: {
     MAX_FEE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    bridgeAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     consumerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -181,10 +265,20 @@ export interface LedgerStorage extends BaseContract {
     providerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     settlementAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    transferAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    txFeeAccount(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     MAX_FEE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    bridgeAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     consumerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -197,5 +291,11 @@ export interface LedgerStorage extends BaseContract {
     providerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     settlementAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    transferAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    txFeeAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

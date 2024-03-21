@@ -27,19 +27,23 @@ export interface ILedgerInterface extends utils.Interface {
   functions: {
     "addPointBalance(address,uint256)": FunctionFragment;
     "addTokenBalance(address,uint256)": FunctionFragment;
+    "burnPoint(address,uint256)": FunctionFragment;
+    "burnUnPayablePoint(bytes32,uint256)": FunctionFragment;
     "changeToLoyaltyToken(address)": FunctionFragment;
     "changeToPayablePoint(bytes32,address)": FunctionFragment;
     "getFee()": FunctionFragment;
     "getFeeAccount()": FunctionFragment;
     "getFoundationAccount()": FunctionFragment;
     "getSettlementAccount()": FunctionFragment;
+    "getTokenAddress()": FunctionFragment;
+    "getTxFeeAccount()": FunctionFragment;
     "increaseNonce(address)": FunctionFragment;
     "loyaltyTypeOf(address)": FunctionFragment;
     "nonceOf(address)": FunctionFragment;
     "pointBalanceOf(address)": FunctionFragment;
-    "providePoint(address,uint256,uint256,string,string,bytes32)": FunctionFragment;
-    "provideToken(address,uint256,uint256,string,string,bytes32)": FunctionFragment;
-    "provideUnPayablePoint(bytes32,uint256,uint256,string,string,bytes32)": FunctionFragment;
+    "providePoint(address,uint256,uint256,string,string,bytes32,address)": FunctionFragment;
+    "provideToken(address,uint256,uint256,string,string,bytes32,address)": FunctionFragment;
+    "provideUnPayablePoint(bytes32,uint256,uint256,string,string,bytes32,address)": FunctionFragment;
     "setFee(uint32)": FunctionFragment;
     "subPointBalance(address,uint256)": FunctionFragment;
     "subTokenBalance(address,uint256)": FunctionFragment;
@@ -52,12 +56,16 @@ export interface ILedgerInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "addPointBalance"
       | "addTokenBalance"
+      | "burnPoint"
+      | "burnUnPayablePoint"
       | "changeToLoyaltyToken"
       | "changeToPayablePoint"
       | "getFee"
       | "getFeeAccount"
       | "getFoundationAccount"
       | "getSettlementAccount"
+      | "getTokenAddress"
+      | "getTxFeeAccount"
       | "increaseNonce"
       | "loyaltyTypeOf"
       | "nonceOf"
@@ -82,6 +90,14 @@ export interface ILedgerInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "burnPoint",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnUnPayablePoint",
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "changeToLoyaltyToken",
     values: [PromiseOrValue<string>]
   ): string;
@@ -100,6 +116,14 @@ export interface ILedgerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getSettlementAccount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTxFeeAccount",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -126,7 +150,8 @@ export interface ILedgerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -137,7 +162,8 @@ export interface ILedgerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -148,7 +174,8 @@ export interface ILedgerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -188,6 +215,11 @@ export interface ILedgerInterface extends utils.Interface {
     functionFragment: "addTokenBalance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "burnPoint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "burnUnPayablePoint",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "changeToLoyaltyToken",
     data: BytesLike
@@ -207,6 +239,14 @@ export interface ILedgerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getSettlementAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTxFeeAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -298,6 +338,18 @@ export interface ILedger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     changeToLoyaltyToken(
       _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -316,6 +368,10 @@ export interface ILedger extends BaseContract {
     getFoundationAccount(overrides?: CallOverrides): Promise<[string]>;
 
     getSettlementAccount(overrides?: CallOverrides): Promise<[string]>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<[string]>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -344,6 +400,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -354,6 +411,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -364,6 +422,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -397,7 +456,7 @@ export interface ILedger extends BaseContract {
     ): Promise<ContractTransaction>;
 
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
   };
@@ -410,6 +469,18 @@ export interface ILedger extends BaseContract {
 
   addTokenBalance(
     _account: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  burnPoint(
+    _account: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  burnUnPayablePoint(
+    _phone: PromiseOrValue<BytesLike>,
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -432,6 +503,10 @@ export interface ILedger extends BaseContract {
   getFoundationAccount(overrides?: CallOverrides): Promise<string>;
 
   getSettlementAccount(overrides?: CallOverrides): Promise<string>;
+
+  getTokenAddress(overrides?: CallOverrides): Promise<string>;
+
+  getTxFeeAccount(overrides?: CallOverrides): Promise<string>;
 
   increaseNonce(
     _account: PromiseOrValue<string>,
@@ -460,6 +535,7 @@ export interface ILedger extends BaseContract {
     _currency: PromiseOrValue<string>,
     _purchaseId: PromiseOrValue<string>,
     _shopId: PromiseOrValue<BytesLike>,
+    _sender: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -470,6 +546,7 @@ export interface ILedger extends BaseContract {
     _currency: PromiseOrValue<string>,
     _purchaseId: PromiseOrValue<string>,
     _shopId: PromiseOrValue<BytesLike>,
+    _sender: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -480,6 +557,7 @@ export interface ILedger extends BaseContract {
     _currency: PromiseOrValue<string>,
     _purchaseId: PromiseOrValue<string>,
     _shopId: PromiseOrValue<BytesLike>,
+    _sender: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -513,7 +591,7 @@ export interface ILedger extends BaseContract {
   ): Promise<ContractTransaction>;
 
   unPayablePointBalanceOf(
-    _hash: PromiseOrValue<BytesLike>,
+    _phone: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -526,6 +604,18 @@ export interface ILedger extends BaseContract {
 
     addTokenBalance(
       _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -548,6 +638,10 @@ export interface ILedger extends BaseContract {
     getFoundationAccount(overrides?: CallOverrides): Promise<string>;
 
     getSettlementAccount(overrides?: CallOverrides): Promise<string>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<string>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<string>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -576,6 +670,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -586,6 +681,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -596,6 +692,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -629,7 +726,7 @@ export interface ILedger extends BaseContract {
     ): Promise<void>;
 
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -645,6 +742,18 @@ export interface ILedger extends BaseContract {
 
     addTokenBalance(
       _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -667,6 +776,10 @@ export interface ILedger extends BaseContract {
     getFoundationAccount(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSettlementAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -695,6 +808,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -705,6 +819,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -715,6 +830,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -748,7 +864,7 @@ export interface ILedger extends BaseContract {
     ): Promise<BigNumber>;
 
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -762,6 +878,18 @@ export interface ILedger extends BaseContract {
 
     addTokenBalance(
       _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -789,6 +917,10 @@ export interface ILedger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getTokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     increaseNonce(
       _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -816,6 +948,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -826,6 +959,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -836,6 +970,7 @@ export interface ILedger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -869,7 +1004,7 @@ export interface ILedger extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

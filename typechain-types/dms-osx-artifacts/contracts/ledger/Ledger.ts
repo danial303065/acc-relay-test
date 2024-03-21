@@ -28,45 +28,108 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
+export declare namespace Ledger {
+  export type ManagementAddressesStruct = {
+    foundation: PromiseOrValue<string>;
+    settlement: PromiseOrValue<string>;
+    fee: PromiseOrValue<string>;
+    txFee: PromiseOrValue<string>;
+  };
+
+  export type ManagementAddressesStructOutput = [
+    string,
+    string,
+    string,
+    string
+  ] & { foundation: string; settlement: string; fee: string; txFee: string };
+
+  export type ContractAddressesStruct = {
+    token: PromiseOrValue<string>;
+    phoneLink: PromiseOrValue<string>;
+    currencyRate: PromiseOrValue<string>;
+    provider: PromiseOrValue<string>;
+    consumer: PromiseOrValue<string>;
+    exchanger: PromiseOrValue<string>;
+    burner: PromiseOrValue<string>;
+    transfer: PromiseOrValue<string>;
+    bridge: PromiseOrValue<string>;
+  };
+
+  export type ContractAddressesStructOutput = [
+    string,
+    string,
+    string,
+    string,
+    string,
+    string,
+    string,
+    string,
+    string
+  ] & {
+    token: string;
+    phoneLink: string;
+    currencyRate: string;
+    provider: string;
+    consumer: string;
+    exchanger: string;
+    burner: string;
+    transfer: string;
+    bridge: string;
+  };
+}
+
 export interface LedgerInterface extends utils.Interface {
   functions: {
     "MAX_FEE()": FunctionFragment;
     "addPointBalance(address,uint256)": FunctionFragment;
     "addTokenBalance(address,uint256)": FunctionFragment;
+    "bridgeAddress()": FunctionFragment;
+    "burnPoint(address,uint256)": FunctionFragment;
+    "burnUnPayablePoint(bytes32,uint256)": FunctionFragment;
+    "burnerAddress()": FunctionFragment;
     "changeToLoyaltyToken(address)": FunctionFragment;
     "changeToPayablePoint(bytes32,address)": FunctionFragment;
     "consumerAddress()": FunctionFragment;
     "deposit(uint256)": FunctionFragment;
+    "depositLiquidity(bytes32,uint256,bytes)": FunctionFragment;
     "exchangerAddress()": FunctionFragment;
     "feeAccount()": FunctionFragment;
     "foundationAccount()": FunctionFragment;
     "getFee()": FunctionFragment;
     "getFeeAccount()": FunctionFragment;
     "getFoundationAccount()": FunctionFragment;
+    "getLiquidity(bytes32,address)": FunctionFragment;
     "getSettlementAccount()": FunctionFragment;
+    "getTokenAddress()": FunctionFragment;
+    "getTxFeeAccount()": FunctionFragment;
     "increaseNonce(address)": FunctionFragment;
-    "initialize(address,address,address,address,address,address,address,address,address)": FunctionFragment;
+    "initialize((address,address,address,address),(address,address,address,address,address,address,address,address,address))": FunctionFragment;
     "loyaltyTypeOf(address)": FunctionFragment;
     "nonceOf(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "pointBalanceOf(address)": FunctionFragment;
-    "providePoint(address,uint256,uint256,string,string,bytes32)": FunctionFragment;
-    "provideToken(address,uint256,uint256,string,string,bytes32)": FunctionFragment;
-    "provideUnPayablePoint(bytes32,uint256,uint256,string,string,bytes32)": FunctionFragment;
+    "providePoint(address,uint256,uint256,string,string,bytes32,address)": FunctionFragment;
+    "provideToken(address,uint256,uint256,string,string,bytes32,address)": FunctionFragment;
+    "provideUnPayablePoint(bytes32,uint256,uint256,string,string,bytes32,address)": FunctionFragment;
     "providerAddress()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
+    "removePhoneInfo(address,bytes)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "setFee(uint32)": FunctionFragment;
     "settlementAccount()": FunctionFragment;
     "subPointBalance(address,uint256)": FunctionFragment;
     "subTokenBalance(address,uint256)": FunctionFragment;
+    "tokenAddress()": FunctionFragment;
     "tokenBalanceOf(address)": FunctionFragment;
+    "transferAddress()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "transferToken(address,address,uint256)": FunctionFragment;
+    "txFeeAccount()": FunctionFragment;
     "unPayablePointBalanceOf(bytes32)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
+    "withdrawLiquidity(bytes32,uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -74,17 +137,25 @@ export interface LedgerInterface extends utils.Interface {
       | "MAX_FEE"
       | "addPointBalance"
       | "addTokenBalance"
+      | "bridgeAddress"
+      | "burnPoint"
+      | "burnUnPayablePoint"
+      | "burnerAddress"
       | "changeToLoyaltyToken"
       | "changeToPayablePoint"
       | "consumerAddress"
       | "deposit"
+      | "depositLiquidity"
       | "exchangerAddress"
       | "feeAccount"
       | "foundationAccount"
       | "getFee"
       | "getFeeAccount"
       | "getFoundationAccount"
+      | "getLiquidity"
       | "getSettlementAccount"
+      | "getTokenAddress"
+      | "getTxFeeAccount"
       | "increaseNonce"
       | "initialize"
       | "loyaltyTypeOf"
@@ -96,18 +167,23 @@ export interface LedgerInterface extends utils.Interface {
       | "provideUnPayablePoint"
       | "providerAddress"
       | "proxiableUUID"
+      | "removePhoneInfo"
       | "renounceOwnership"
       | "setFee"
       | "settlementAccount"
       | "subPointBalance"
       | "subTokenBalance"
+      | "tokenAddress"
       | "tokenBalanceOf"
+      | "transferAddress"
       | "transferOwnership"
       | "transferToken"
+      | "txFeeAccount"
       | "unPayablePointBalanceOf"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "withdraw"
+      | "withdrawLiquidity"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "MAX_FEE", values?: undefined): string;
@@ -118,6 +194,22 @@ export interface LedgerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "addTokenBalance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bridgeAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnPoint",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnUnPayablePoint",
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "burnerAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "changeToLoyaltyToken",
@@ -134,6 +226,14 @@ export interface LedgerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "deposit",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositLiquidity",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "exchangerAddress",
@@ -157,7 +257,19 @@ export interface LedgerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getLiquidity",
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getSettlementAccount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTxFeeAccount",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -166,17 +278,7 @@ export interface LedgerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
-    ]
+    values: [Ledger.ManagementAddressesStruct, Ledger.ContractAddressesStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "loyaltyTypeOf",
@@ -199,7 +301,8 @@ export interface LedgerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -210,7 +313,8 @@ export interface LedgerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -221,7 +325,8 @@ export interface LedgerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
@@ -231,6 +336,10 @@ export interface LedgerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removePhoneInfo",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -253,8 +362,16 @@ export interface LedgerInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "tokenAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "tokenBalanceOf",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -267,6 +384,10 @@ export interface LedgerInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "txFeeAccount",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "unPayablePointBalanceOf",
@@ -284,6 +405,10 @@ export interface LedgerInterface extends utils.Interface {
     functionFragment: "withdraw",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawLiquidity",
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+  ): string;
 
   decodeFunctionResult(functionFragment: "MAX_FEE", data: BytesLike): Result;
   decodeFunctionResult(
@@ -292,6 +417,19 @@ export interface LedgerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "addTokenBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bridgeAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "burnPoint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "burnUnPayablePoint",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "burnerAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -307,6 +445,10 @@ export interface LedgerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositLiquidity",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "exchangerAddress",
     data: BytesLike
@@ -326,7 +468,19 @@ export interface LedgerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getLiquidity",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getSettlementAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTxFeeAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -365,6 +519,10 @@ export interface LedgerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "removePhoneInfo",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
@@ -382,7 +540,15 @@ export interface LedgerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "tokenAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "tokenBalanceOf",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -391,6 +557,10 @@ export interface LedgerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "txFeeAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -403,30 +573,40 @@ export interface LedgerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawLiquidity",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Deposited(address,uint256,uint256,uint256)": EventFragment;
+    "DepositedLiquidity(bytes32,address,uint256,uint256)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "ProvidedPoint(address,uint256,uint256,string,uint256,string,bytes32)": EventFragment;
     "ProvidedToken(address,uint256,uint256,string,uint256,string,bytes32)": EventFragment;
     "ProvidedUnPayablePoint(bytes32,uint256,uint256,string,uint256,string,bytes32)": EventFragment;
+    "RemovedPhoneInfo(bytes32,address)": EventFragment;
     "Upgraded(address)": EventFragment;
     "Withdrawn(address,uint256,uint256,uint256)": EventFragment;
+    "WithdrawnLiquidity(bytes32,address,uint256,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DepositedLiquidity"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProvidedPoint"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProvidedToken"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProvidedUnPayablePoint"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RemovedPhoneInfo"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawnLiquidity"): EventFragment;
 }
 
 export interface AdminChangedEventObject {
@@ -462,6 +642,20 @@ export type DepositedEvent = TypedEvent<
 >;
 
 export type DepositedEventFilter = TypedEventFilter<DepositedEvent>;
+
+export interface DepositedLiquidityEventObject {
+  tokenId: string;
+  account: string;
+  amount: BigNumber;
+  liquidity: BigNumber;
+}
+export type DepositedLiquidityEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber],
+  DepositedLiquidityEventObject
+>;
+
+export type DepositedLiquidityEventFilter =
+  TypedEventFilter<DepositedLiquidityEvent>;
 
 export interface InitializedEventObject {
   version: number;
@@ -531,6 +725,18 @@ export type ProvidedUnPayablePointEvent = TypedEvent<
 export type ProvidedUnPayablePointEventFilter =
   TypedEventFilter<ProvidedUnPayablePointEvent>;
 
+export interface RemovedPhoneInfoEventObject {
+  phone: string;
+  account: string;
+}
+export type RemovedPhoneInfoEvent = TypedEvent<
+  [string, string],
+  RemovedPhoneInfoEventObject
+>;
+
+export type RemovedPhoneInfoEventFilter =
+  TypedEventFilter<RemovedPhoneInfoEvent>;
+
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -550,6 +756,20 @@ export type WithdrawnEvent = TypedEvent<
 >;
 
 export type WithdrawnEventFilter = TypedEventFilter<WithdrawnEvent>;
+
+export interface WithdrawnLiquidityEventObject {
+  tokenId: string;
+  account: string;
+  amount: BigNumber;
+  liquidity: BigNumber;
+}
+export type WithdrawnLiquidityEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber],
+  WithdrawnLiquidityEventObject
+>;
+
+export type WithdrawnLiquidityEventFilter =
+  TypedEventFilter<WithdrawnLiquidityEvent>;
 
 export interface Ledger extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -592,6 +812,22 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    bridgeAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<[string]>;
+
     changeToLoyaltyToken(
       _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -610,6 +846,13 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    depositLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     exchangerAddress(overrides?: CallOverrides): Promise<[string]>;
 
     feeAccount(overrides?: CallOverrides): Promise<[string]>;
@@ -622,7 +865,17 @@ export interface Ledger extends BaseContract {
 
     getFoundationAccount(overrides?: CallOverrides): Promise<[string]>;
 
+    getLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getSettlementAccount(overrides?: CallOverrides): Promise<[string]>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<[string]>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -630,15 +883,8 @@ export interface Ledger extends BaseContract {
     ): Promise<ContractTransaction>;
 
     initialize(
-      _foundationAccount: PromiseOrValue<string>,
-      _settlementAccount: PromiseOrValue<string>,
-      _feeAccount: PromiseOrValue<string>,
-      _tokenAddress: PromiseOrValue<string>,
-      _linkAddress: PromiseOrValue<string>,
-      _currencyRateAddress: PromiseOrValue<string>,
-      _providerAddress: PromiseOrValue<string>,
-      _consumerAddress: PromiseOrValue<string>,
-      _exchangerAddress: PromiseOrValue<string>,
+      managements: Ledger.ManagementAddressesStruct,
+      contracts: Ledger.ContractAddressesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -666,6 +912,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -676,6 +923,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -686,12 +934,19 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     providerAddress(overrides?: CallOverrides): Promise<[string]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
+
+    removePhoneInfo(
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -716,10 +971,14 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    tokenAddress(overrides?: CallOverrides): Promise<[string]>;
+
     tokenBalanceOf(
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    transferAddress(overrides?: CallOverrides): Promise<[string]>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -733,8 +992,10 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    txFeeAccount(overrides?: CallOverrides): Promise<[string]>;
+
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -750,6 +1011,12 @@ export interface Ledger extends BaseContract {
     ): Promise<ContractTransaction>;
 
     withdraw(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -769,6 +1036,22 @@ export interface Ledger extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  bridgeAddress(overrides?: CallOverrides): Promise<string>;
+
+  burnPoint(
+    _account: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  burnUnPayablePoint(
+    _phone: PromiseOrValue<BytesLike>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  burnerAddress(overrides?: CallOverrides): Promise<string>;
+
   changeToLoyaltyToken(
     _account: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -787,6 +1070,13 @@ export interface Ledger extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  depositLiquidity(
+    _tokenId: PromiseOrValue<BytesLike>,
+    _amount: PromiseOrValue<BigNumberish>,
+    _signature: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   exchangerAddress(overrides?: CallOverrides): Promise<string>;
 
   feeAccount(overrides?: CallOverrides): Promise<string>;
@@ -799,7 +1089,17 @@ export interface Ledger extends BaseContract {
 
   getFoundationAccount(overrides?: CallOverrides): Promise<string>;
 
+  getLiquidity(
+    _tokenId: PromiseOrValue<BytesLike>,
+    _account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getSettlementAccount(overrides?: CallOverrides): Promise<string>;
+
+  getTokenAddress(overrides?: CallOverrides): Promise<string>;
+
+  getTxFeeAccount(overrides?: CallOverrides): Promise<string>;
 
   increaseNonce(
     _account: PromiseOrValue<string>,
@@ -807,15 +1107,8 @@ export interface Ledger extends BaseContract {
   ): Promise<ContractTransaction>;
 
   initialize(
-    _foundationAccount: PromiseOrValue<string>,
-    _settlementAccount: PromiseOrValue<string>,
-    _feeAccount: PromiseOrValue<string>,
-    _tokenAddress: PromiseOrValue<string>,
-    _linkAddress: PromiseOrValue<string>,
-    _currencyRateAddress: PromiseOrValue<string>,
-    _providerAddress: PromiseOrValue<string>,
-    _consumerAddress: PromiseOrValue<string>,
-    _exchangerAddress: PromiseOrValue<string>,
+    managements: Ledger.ManagementAddressesStruct,
+    contracts: Ledger.ContractAddressesStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -843,6 +1136,7 @@ export interface Ledger extends BaseContract {
     _currency: PromiseOrValue<string>,
     _purchaseId: PromiseOrValue<string>,
     _shopId: PromiseOrValue<BytesLike>,
+    _sender: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -853,6 +1147,7 @@ export interface Ledger extends BaseContract {
     _currency: PromiseOrValue<string>,
     _purchaseId: PromiseOrValue<string>,
     _shopId: PromiseOrValue<BytesLike>,
+    _sender: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -863,12 +1158,19 @@ export interface Ledger extends BaseContract {
     _currency: PromiseOrValue<string>,
     _purchaseId: PromiseOrValue<string>,
     _shopId: PromiseOrValue<BytesLike>,
+    _sender: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   providerAddress(overrides?: CallOverrides): Promise<string>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+  removePhoneInfo(
+    _account: PromiseOrValue<string>,
+    _signature: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -893,10 +1195,14 @@ export interface Ledger extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  tokenAddress(overrides?: CallOverrides): Promise<string>;
+
   tokenBalanceOf(
     _account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  transferAddress(overrides?: CallOverrides): Promise<string>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
@@ -910,8 +1216,10 @@ export interface Ledger extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  txFeeAccount(overrides?: CallOverrides): Promise<string>;
+
   unPayablePointBalanceOf(
-    _hash: PromiseOrValue<BytesLike>,
+    _phone: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -931,6 +1239,12 @@ export interface Ledger extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  withdrawLiquidity(
+    _tokenId: PromiseOrValue<BytesLike>,
+    _amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     MAX_FEE(overrides?: CallOverrides): Promise<number>;
 
@@ -945,6 +1259,22 @@ export interface Ledger extends BaseContract {
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    bridgeAddress(overrides?: CallOverrides): Promise<string>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<string>;
 
     changeToLoyaltyToken(
       _account: PromiseOrValue<string>,
@@ -964,6 +1294,13 @@ export interface Ledger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    depositLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     exchangerAddress(overrides?: CallOverrides): Promise<string>;
 
     feeAccount(overrides?: CallOverrides): Promise<string>;
@@ -976,7 +1313,17 @@ export interface Ledger extends BaseContract {
 
     getFoundationAccount(overrides?: CallOverrides): Promise<string>;
 
+    getLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getSettlementAccount(overrides?: CallOverrides): Promise<string>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<string>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<string>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -984,15 +1331,8 @@ export interface Ledger extends BaseContract {
     ): Promise<void>;
 
     initialize(
-      _foundationAccount: PromiseOrValue<string>,
-      _settlementAccount: PromiseOrValue<string>,
-      _feeAccount: PromiseOrValue<string>,
-      _tokenAddress: PromiseOrValue<string>,
-      _linkAddress: PromiseOrValue<string>,
-      _currencyRateAddress: PromiseOrValue<string>,
-      _providerAddress: PromiseOrValue<string>,
-      _consumerAddress: PromiseOrValue<string>,
-      _exchangerAddress: PromiseOrValue<string>,
+      managements: Ledger.ManagementAddressesStruct,
+      contracts: Ledger.ContractAddressesStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1020,6 +1360,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1030,6 +1371,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1040,12 +1382,19 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     providerAddress(overrides?: CallOverrides): Promise<string>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
+
+    removePhoneInfo(
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -1068,10 +1417,14 @@ export interface Ledger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    tokenAddress(overrides?: CallOverrides): Promise<string>;
+
     tokenBalanceOf(
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    transferAddress(overrides?: CallOverrides): Promise<string>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -1085,8 +1438,10 @@ export interface Ledger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    txFeeAccount(overrides?: CallOverrides): Promise<string>;
+
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1102,6 +1457,12 @@ export interface Ledger extends BaseContract {
     ): Promise<void>;
 
     withdraw(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdrawLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1136,6 +1497,19 @@ export interface Ledger extends BaseContract {
       depositedValue?: null,
       balanceToken?: null
     ): DepositedEventFilter;
+
+    "DepositedLiquidity(bytes32,address,uint256,uint256)"(
+      tokenId?: null,
+      account?: null,
+      amount?: null,
+      liquidity?: null
+    ): DepositedLiquidityEventFilter;
+    DepositedLiquidity(
+      tokenId?: null,
+      account?: null,
+      amount?: null,
+      liquidity?: null
+    ): DepositedLiquidityEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
@@ -1206,6 +1580,12 @@ export interface Ledger extends BaseContract {
       shopId?: null
     ): ProvidedUnPayablePointEventFilter;
 
+    "RemovedPhoneInfo(bytes32,address)"(
+      phone?: null,
+      account?: null
+    ): RemovedPhoneInfoEventFilter;
+    RemovedPhoneInfo(phone?: null, account?: null): RemovedPhoneInfoEventFilter;
+
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -1225,6 +1605,19 @@ export interface Ledger extends BaseContract {
       withdrawnValue?: null,
       balanceToken?: null
     ): WithdrawnEventFilter;
+
+    "WithdrawnLiquidity(bytes32,address,uint256,uint256)"(
+      tokenId?: null,
+      account?: null,
+      amount?: null,
+      liquidity?: null
+    ): WithdrawnLiquidityEventFilter;
+    WithdrawnLiquidity(
+      tokenId?: null,
+      account?: null,
+      amount?: null,
+      liquidity?: null
+    ): WithdrawnLiquidityEventFilter;
   };
 
   estimateGas: {
@@ -1241,6 +1634,22 @@ export interface Ledger extends BaseContract {
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    bridgeAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     changeToLoyaltyToken(
       _account: PromiseOrValue<string>,
@@ -1260,6 +1669,13 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    depositLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     exchangerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     feeAccount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1272,7 +1688,17 @@ export interface Ledger extends BaseContract {
 
     getFoundationAccount(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getSettlementAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -1280,15 +1706,8 @@ export interface Ledger extends BaseContract {
     ): Promise<BigNumber>;
 
     initialize(
-      _foundationAccount: PromiseOrValue<string>,
-      _settlementAccount: PromiseOrValue<string>,
-      _feeAccount: PromiseOrValue<string>,
-      _tokenAddress: PromiseOrValue<string>,
-      _linkAddress: PromiseOrValue<string>,
-      _currencyRateAddress: PromiseOrValue<string>,
-      _providerAddress: PromiseOrValue<string>,
-      _consumerAddress: PromiseOrValue<string>,
-      _exchangerAddress: PromiseOrValue<string>,
+      managements: Ledger.ManagementAddressesStruct,
+      contracts: Ledger.ContractAddressesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1316,6 +1735,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1326,6 +1746,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1336,12 +1757,19 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     providerAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    removePhoneInfo(
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1366,10 +1794,14 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    tokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     tokenBalanceOf(
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    transferAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -1383,8 +1815,10 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    txFeeAccount(overrides?: CallOverrides): Promise<BigNumber>;
+
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1400,6 +1834,12 @@ export interface Ledger extends BaseContract {
     ): Promise<BigNumber>;
 
     withdraw(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1420,6 +1860,22 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    bridgeAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    burnPoint(
+      _account: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    burnUnPayablePoint(
+      _phone: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    burnerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     changeToLoyaltyToken(
       _account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1438,6 +1894,13 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    depositLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _amount: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     exchangerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     feeAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1452,9 +1915,19 @@ export interface Ledger extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getSettlementAccount(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getTokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getTxFeeAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseNonce(
       _account: PromiseOrValue<string>,
@@ -1462,15 +1935,8 @@ export interface Ledger extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _foundationAccount: PromiseOrValue<string>,
-      _settlementAccount: PromiseOrValue<string>,
-      _feeAccount: PromiseOrValue<string>,
-      _tokenAddress: PromiseOrValue<string>,
-      _linkAddress: PromiseOrValue<string>,
-      _currencyRateAddress: PromiseOrValue<string>,
-      _providerAddress: PromiseOrValue<string>,
-      _consumerAddress: PromiseOrValue<string>,
-      _exchangerAddress: PromiseOrValue<string>,
+      managements: Ledger.ManagementAddressesStruct,
+      contracts: Ledger.ContractAddressesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1498,6 +1964,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1508,6 +1975,7 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1518,12 +1986,19 @@ export interface Ledger extends BaseContract {
       _currency: PromiseOrValue<string>,
       _purchaseId: PromiseOrValue<string>,
       _shopId: PromiseOrValue<BytesLike>,
+      _sender: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     providerAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    removePhoneInfo(
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1548,10 +2023,14 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    tokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     tokenBalanceOf(
       _account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    transferAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -1565,8 +2044,10 @@ export interface Ledger extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    txFeeAccount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     unPayablePointBalanceOf(
-      _hash: PromiseOrValue<BytesLike>,
+      _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1582,6 +2063,12 @@ export interface Ledger extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     withdraw(
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawLiquidity(
+      _tokenId: PromiseOrValue<BytesLike>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

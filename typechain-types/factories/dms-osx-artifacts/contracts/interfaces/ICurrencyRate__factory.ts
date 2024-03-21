@@ -160,14 +160,31 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "string",
-        name: "_symbol",
-        type: "string",
+        internalType: "uint256",
+        name: "_timestamp",
+        type: "uint256",
       },
       {
-        internalType: "uint256",
-        name: "_price",
-        type: "uint256",
+        components: [
+          {
+            internalType: "string",
+            name: "symbol",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "rate",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct ICurrencyRate.CurrencyData[]",
+        name: "_data",
+        type: "tuple[]",
+      },
+      {
+        internalType: "bytes[]",
+        name: "_signatures",
+        type: "bytes[]",
       },
     ],
     name: "set",

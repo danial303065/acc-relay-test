@@ -6,8 +6,6 @@ import type {
   BigNumber,
   BytesLike,
   CallOverrides,
-  ContractTransaction,
-  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -25,26 +23,18 @@ import type {
 export interface IPhoneLinkCollectionInterface extends utils.Interface {
   functions: {
     "nonceOf(address)": FunctionFragment;
-    "pause()": FunctionFragment;
     "toAddress(bytes32)": FunctionFragment;
     "toPhone(address)": FunctionFragment;
-    "unpause()": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic:
-      | "nonceOf"
-      | "pause"
-      | "toAddress"
-      | "toPhone"
-      | "unpause"
+    nameOrSignatureOrTopic: "nonceOf" | "toAddress" | "toPhone"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "nonceOf",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "toAddress",
     values: [PromiseOrValue<BytesLike>]
@@ -53,13 +43,10 @@ export interface IPhoneLinkCollectionInterface extends utils.Interface {
     functionFragment: "toPhone",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "nonceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "toAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "toPhone", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
 
   events: {};
 }
@@ -96,10 +83,6 @@ export interface IPhoneLinkCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    pause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     toAddress(
       _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -109,20 +92,12 @@ export interface IPhoneLinkCollection extends BaseContract {
       _wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    unpause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   nonceOf(
     _wallet: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  pause(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   toAddress(
     _phone: PromiseOrValue<BytesLike>,
@@ -134,17 +109,11 @@ export interface IPhoneLinkCollection extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  unpause(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     nonceOf(
       _wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    pause(overrides?: CallOverrides): Promise<void>;
 
     toAddress(
       _phone: PromiseOrValue<BytesLike>,
@@ -155,8 +124,6 @@ export interface IPhoneLinkCollection extends BaseContract {
       _wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    unpause(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
@@ -167,10 +134,6 @@ export interface IPhoneLinkCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     toAddress(
       _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -179,10 +142,6 @@ export interface IPhoneLinkCollection extends BaseContract {
     toPhone(
       _wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    unpause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -192,10 +151,6 @@ export interface IPhoneLinkCollection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    pause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     toAddress(
       _phone: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -204,10 +159,6 @@ export interface IPhoneLinkCollection extends BaseContract {
     toPhone(
       _wallet: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    unpause(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

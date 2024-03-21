@@ -37,12 +37,14 @@ export declare namespace LoyaltyProvider {
     shopId: PromiseOrValue<BytesLike>;
     account: PromiseOrValue<string>;
     phone: PromiseOrValue<BytesLike>;
+    sender: PromiseOrValue<string>;
   };
 
   export type PurchaseDataStructOutput = [
     string,
     BigNumber,
     BigNumber,
+    string,
     string,
     string,
     string,
@@ -55,17 +57,18 @@ export declare namespace LoyaltyProvider {
     shopId: string;
     account: string;
     phone: string;
+    sender: string;
   };
 }
 
 export interface LoyaltyProviderInterface extends utils.Interface {
   functions: {
-    "NULL()": FunctionFragment;
     "initialize(address,address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
+    "purchasesOf(string)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "savePurchase((string,uint256,uint256,string,bytes32,address,bytes32))": FunctionFragment;
+    "savePurchase(uint256,(string,uint256,uint256,string,bytes32,address,bytes32,address)[],bytes[])": FunctionFragment;
     "setLedger(address)": FunctionFragment;
     "setShop(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -75,10 +78,10 @@ export interface LoyaltyProviderInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "NULL"
       | "initialize"
       | "owner"
       | "proxiableUUID"
+      | "purchasesOf"
       | "renounceOwnership"
       | "savePurchase"
       | "setLedger"
@@ -88,7 +91,6 @@ export interface LoyaltyProviderInterface extends utils.Interface {
       | "upgradeToAndCall"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "NULL", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "initialize",
     values: [
@@ -103,12 +105,20 @@ export interface LoyaltyProviderInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "purchasesOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "savePurchase",
-    values: [LoyaltyProvider.PurchaseDataStruct]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      LoyaltyProvider.PurchaseDataStruct[],
+      PromiseOrValue<BytesLike>[]
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "setLedger",
@@ -131,11 +141,14 @@ export interface LoyaltyProviderInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
 
-  decodeFunctionResult(functionFragment: "NULL", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "purchasesOf",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -163,7 +176,7 @@ export interface LoyaltyProviderInterface extends utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "SavedPurchase(string,uint256,uint256,string,bytes32,address,bytes32)": EventFragment;
+    "SavedPurchase(string,uint256,uint256,string,bytes32,address,bytes32,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -223,9 +236,10 @@ export interface SavedPurchaseEventObject {
   shopId: string;
   account: string;
   phone: string;
+  sender: string;
 }
 export type SavedPurchaseEvent = TypedEvent<
-  [string, BigNumber, BigNumber, string, string, string, string],
+  [string, BigNumber, BigNumber, string, string, string, string, string],
   SavedPurchaseEventObject
 >;
 
@@ -265,8 +279,6 @@ export interface LoyaltyProvider extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    NULL(overrides?: CallOverrides): Promise<[string]>;
-
     initialize(
       _validatorAddress: PromiseOrValue<string>,
       _linkAddress: PromiseOrValue<string>,
@@ -278,12 +290,19 @@ export interface LoyaltyProvider extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
+    purchasesOf(
+      _purchaseId: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     savePurchase(
-      data: LoyaltyProvider.PurchaseDataStruct,
+      _height: PromiseOrValue<BigNumberish>,
+      _data: LoyaltyProvider.PurchaseDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -314,8 +333,6 @@ export interface LoyaltyProvider extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  NULL(overrides?: CallOverrides): Promise<string>;
-
   initialize(
     _validatorAddress: PromiseOrValue<string>,
     _linkAddress: PromiseOrValue<string>,
@@ -327,12 +344,19 @@ export interface LoyaltyProvider extends BaseContract {
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
+  purchasesOf(
+    _purchaseId: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   savePurchase(
-    data: LoyaltyProvider.PurchaseDataStruct,
+    _height: PromiseOrValue<BigNumberish>,
+    _data: LoyaltyProvider.PurchaseDataStruct[],
+    _signatures: PromiseOrValue<BytesLike>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -363,8 +387,6 @@ export interface LoyaltyProvider extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    NULL(overrides?: CallOverrides): Promise<string>;
-
     initialize(
       _validatorAddress: PromiseOrValue<string>,
       _linkAddress: PromiseOrValue<string>,
@@ -376,10 +398,17 @@ export interface LoyaltyProvider extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
+    purchasesOf(
+      _purchaseId: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     savePurchase(
-      data: LoyaltyProvider.PurchaseDataStruct,
+      _height: PromiseOrValue<BigNumberish>,
+      _data: LoyaltyProvider.PurchaseDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -439,14 +468,15 @@ export interface LoyaltyProvider extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
-    "SavedPurchase(string,uint256,uint256,string,bytes32,address,bytes32)"(
+    "SavedPurchase(string,uint256,uint256,string,bytes32,address,bytes32,address)"(
       purchaseId?: null,
       amount?: null,
       loyalty?: null,
       currency?: null,
       shopId?: null,
       account?: null,
-      phone?: null
+      phone?: null,
+      sender?: null
     ): SavedPurchaseEventFilter;
     SavedPurchase(
       purchaseId?: null,
@@ -455,7 +485,8 @@ export interface LoyaltyProvider extends BaseContract {
       currency?: null,
       shopId?: null,
       account?: null,
-      phone?: null
+      phone?: null,
+      sender?: null
     ): SavedPurchaseEventFilter;
 
     "Upgraded(address)"(
@@ -467,8 +498,6 @@ export interface LoyaltyProvider extends BaseContract {
   };
 
   estimateGas: {
-    NULL(overrides?: CallOverrides): Promise<BigNumber>;
-
     initialize(
       _validatorAddress: PromiseOrValue<string>,
       _linkAddress: PromiseOrValue<string>,
@@ -480,12 +509,19 @@ export interface LoyaltyProvider extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
+    purchasesOf(
+      _purchaseId: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     savePurchase(
-      data: LoyaltyProvider.PurchaseDataStruct,
+      _height: PromiseOrValue<BigNumberish>,
+      _data: LoyaltyProvider.PurchaseDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -517,8 +553,6 @@ export interface LoyaltyProvider extends BaseContract {
   };
 
   populateTransaction: {
-    NULL(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     initialize(
       _validatorAddress: PromiseOrValue<string>,
       _linkAddress: PromiseOrValue<string>,
@@ -530,12 +564,19 @@ export interface LoyaltyProvider extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    purchasesOf(
+      _purchaseId: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     savePurchase(
-      data: LoyaltyProvider.PurchaseDataStruct,
+      _height: PromiseOrValue<BigNumberish>,
+      _data: LoyaltyProvider.PurchaseDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

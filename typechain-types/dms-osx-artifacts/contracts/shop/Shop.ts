@@ -46,6 +46,7 @@ export declare namespace IShop {
     name: PromiseOrValue<string>;
     currency: PromiseOrValue<string>;
     account: PromiseOrValue<string>;
+    delegator: PromiseOrValue<string>;
     providedAmount: PromiseOrValue<BigNumberish>;
     usedAmount: PromiseOrValue<BigNumberish>;
     settledAmount: PromiseOrValue<BigNumberish>;
@@ -57,6 +58,7 @@ export declare namespace IShop {
   };
 
   export type ShopDataStructOutput = [
+    string,
     string,
     string,
     string,
@@ -74,6 +76,7 @@ export declare namespace IShop {
     name: string;
     currency: string;
     account: string;
+    delegator: string;
     providedAmount: BigNumber;
     usedAmount: BigNumber;
     settledAmount: BigNumber;
@@ -91,11 +94,14 @@ export interface ShopInterface extends utils.Interface {
     "addProvidedAmount(bytes32,uint256,string)": FunctionFragment;
     "addSettledAmount(bytes32,uint256,string)": FunctionFragment;
     "addUsedAmount(bytes32,uint256,string,bytes32)": FunctionFragment;
+    "changeDelegator(bytes32,address,address,bytes)": FunctionFragment;
     "changeStatus(bytes32,uint8,address,bytes)": FunctionFragment;
     "closeWithdrawal(bytes32,address,bytes)": FunctionFragment;
     "consumerAddress()": FunctionFragment;
     "getSettlementAmount(bytes32)": FunctionFragment;
-    "initialize(address,address,address,address)": FunctionFragment;
+    "getShopsCountOfAccount(address)": FunctionFragment;
+    "getShopsOfAccount(address,uint256,uint256)": FunctionFragment;
+    "initialize(address,address,address)": FunctionFragment;
     "isAvailableId(bytes32)": FunctionFragment;
     "nonceOf(address)": FunctionFragment;
     "openWithdrawal(bytes32,uint256,address,bytes)": FunctionFragment;
@@ -106,7 +112,6 @@ export interface ShopInterface extends utils.Interface {
     "shopIdOf(uint256)": FunctionFragment;
     "shopOf(bytes32)": FunctionFragment;
     "shopsLength()": FunctionFragment;
-    "shopsOf(address)": FunctionFragment;
     "subUsedAmount(bytes32,uint256,string,bytes32)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "update(bytes32,string,string,address,bytes)": FunctionFragment;
@@ -121,10 +126,13 @@ export interface ShopInterface extends utils.Interface {
       | "addProvidedAmount"
       | "addSettledAmount"
       | "addUsedAmount"
+      | "changeDelegator"
       | "changeStatus"
       | "closeWithdrawal"
       | "consumerAddress"
       | "getSettlementAmount"
+      | "getShopsCountOfAccount"
+      | "getShopsOfAccount"
       | "initialize"
       | "isAvailableId"
       | "nonceOf"
@@ -136,7 +144,6 @@ export interface ShopInterface extends utils.Interface {
       | "shopIdOf"
       | "shopOf"
       | "shopsLength"
-      | "shopsOf"
       | "subUsedAmount"
       | "transferOwnership"
       | "update"
@@ -181,6 +188,15 @@ export interface ShopInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "changeDelegator",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "changeStatus",
     values: [
       PromiseOrValue<BytesLike>,
@@ -206,9 +222,20 @@ export interface ShopInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize",
+    functionFragment: "getShopsCountOfAccount",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getShopsOfAccount",
     values: [
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>
@@ -255,10 +282,6 @@ export interface ShopInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "shopsLength",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "shopsOf",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "subUsedAmount",
@@ -310,6 +333,10 @@ export interface ShopInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "changeDelegator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "changeStatus",
     data: BytesLike
   ): Result;
@@ -323,6 +350,14 @@ export interface ShopInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getSettlementAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getShopsCountOfAccount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getShopsOfAccount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
@@ -354,7 +389,6 @@ export interface ShopInterface extends utils.Interface {
     functionFragment: "shopsLength",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "shopsOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "subUsedAmount",
     data: BytesLike
@@ -378,6 +412,7 @@ export interface ShopInterface extends utils.Interface {
     "AddedShop(bytes32,string,string,address,uint8)": EventFragment;
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "ChangedDelegator(bytes32,address)": EventFragment;
     "ChangedShopStatus(bytes32,uint8)": EventFragment;
     "ClosedWithdrawal(bytes32,uint256,uint256,string,address,uint256)": EventFragment;
     "DecreasedUsedAmount(bytes32,uint256,uint256,string,string,bytes32)": EventFragment;
@@ -394,6 +429,7 @@ export interface ShopInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AddedShop"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ChangedDelegator"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ChangedShopStatus"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ClosedWithdrawal"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DecreasedUsedAmount"): EventFragment;
@@ -441,6 +477,18 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface ChangedDelegatorEventObject {
+  shopId: string;
+  delegator: string;
+}
+export type ChangedDelegatorEvent = TypedEvent<
+  [string, string],
+  ChangedDelegatorEventObject
+>;
+
+export type ChangedDelegatorEventFilter =
+  TypedEventFilter<ChangedDelegatorEvent>;
 
 export interface ChangedShopStatusEventObject {
   shopId: string;
@@ -645,6 +693,14 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    changeDelegator(
+      _shopId: PromiseOrValue<BytesLike>,
+      _delegator: PromiseOrValue<string>,
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     changeStatus(
       _shopId: PromiseOrValue<BytesLike>,
       _status: PromiseOrValue<BigNumberish>,
@@ -667,8 +723,19 @@ export interface Shop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
     initialize(
-      _certifier: PromiseOrValue<string>,
       _currencyRate: PromiseOrValue<string>,
       _providerAddress: PromiseOrValue<string>,
       _consumerAddress: PromiseOrValue<string>,
@@ -714,11 +781,6 @@ export interface Shop extends BaseContract {
     ): Promise<[IShop.ShopDataStructOutput]>;
 
     shopsLength(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    shopsOf(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[string[]]>;
 
     subUsedAmount(
       _shopId: PromiseOrValue<BytesLike>,
@@ -790,6 +852,14 @@ export interface Shop extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  changeDelegator(
+    _shopId: PromiseOrValue<BytesLike>,
+    _delegator: PromiseOrValue<string>,
+    _account: PromiseOrValue<string>,
+    _signature: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   changeStatus(
     _shopId: PromiseOrValue<BytesLike>,
     _status: PromiseOrValue<BigNumberish>,
@@ -812,8 +882,19 @@ export interface Shop extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getShopsCountOfAccount(
+    _account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getShopsOfAccount(
+    _account: PromiseOrValue<string>,
+    _from: PromiseOrValue<BigNumberish>,
+    _to: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
   initialize(
-    _certifier: PromiseOrValue<string>,
     _currencyRate: PromiseOrValue<string>,
     _providerAddress: PromiseOrValue<string>,
     _consumerAddress: PromiseOrValue<string>,
@@ -859,11 +940,6 @@ export interface Shop extends BaseContract {
   ): Promise<IShop.ShopDataStructOutput>;
 
   shopsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-  shopsOf(
-    _account: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string[]>;
 
   subUsedAmount(
     _shopId: PromiseOrValue<BytesLike>,
@@ -935,6 +1011,14 @@ export interface Shop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    changeDelegator(
+      _shopId: PromiseOrValue<BytesLike>,
+      _delegator: PromiseOrValue<string>,
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     changeStatus(
       _shopId: PromiseOrValue<BytesLike>,
       _status: PromiseOrValue<BigNumberish>,
@@ -957,8 +1041,19 @@ export interface Shop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
     initialize(
-      _certifier: PromiseOrValue<string>,
       _currencyRate: PromiseOrValue<string>,
       _providerAddress: PromiseOrValue<string>,
       _consumerAddress: PromiseOrValue<string>,
@@ -1002,11 +1097,6 @@ export interface Shop extends BaseContract {
     ): Promise<IShop.ShopDataStructOutput>;
 
     shopsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-    shopsOf(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string[]>;
 
     subUsedAmount(
       _shopId: PromiseOrValue<BytesLike>,
@@ -1078,6 +1168,15 @@ export interface Shop extends BaseContract {
     BeaconUpgraded(
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
+
+    "ChangedDelegator(bytes32,address)"(
+      shopId?: null,
+      delegator?: null
+    ): ChangedDelegatorEventFilter;
+    ChangedDelegator(
+      shopId?: null,
+      delegator?: null
+    ): ChangedDelegatorEventFilter;
 
     "ChangedShopStatus(bytes32,uint8)"(
       shopId?: null,
@@ -1251,6 +1350,14 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    changeDelegator(
+      _shopId: PromiseOrValue<BytesLike>,
+      _delegator: PromiseOrValue<string>,
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     changeStatus(
       _shopId: PromiseOrValue<BytesLike>,
       _status: PromiseOrValue<BigNumberish>,
@@ -1273,8 +1380,19 @@ export interface Shop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     initialize(
-      _certifier: PromiseOrValue<string>,
       _currencyRate: PromiseOrValue<string>,
       _providerAddress: PromiseOrValue<string>,
       _consumerAddress: PromiseOrValue<string>,
@@ -1320,11 +1438,6 @@ export interface Shop extends BaseContract {
     ): Promise<BigNumber>;
 
     shopsLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-    shopsOf(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
 
     subUsedAmount(
       _shopId: PromiseOrValue<BytesLike>,
@@ -1397,6 +1510,14 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    changeDelegator(
+      _shopId: PromiseOrValue<BytesLike>,
+      _delegator: PromiseOrValue<string>,
+      _account: PromiseOrValue<string>,
+      _signature: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     changeStatus(
       _shopId: PromiseOrValue<BytesLike>,
       _status: PromiseOrValue<BigNumberish>,
@@ -1419,8 +1540,19 @@ export interface Shop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getShopsCountOfAccount(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getShopsOfAccount(
+      _account: PromiseOrValue<string>,
+      _from: PromiseOrValue<BigNumberish>,
+      _to: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     initialize(
-      _certifier: PromiseOrValue<string>,
       _currencyRate: PromiseOrValue<string>,
       _providerAddress: PromiseOrValue<string>,
       _consumerAddress: PromiseOrValue<string>,
@@ -1466,11 +1598,6 @@ export interface Shop extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     shopsLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    shopsOf(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     subUsedAmount(
       _shopId: PromiseOrValue<BytesLike>,

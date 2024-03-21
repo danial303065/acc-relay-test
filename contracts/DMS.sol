@@ -10,4 +10,4 @@ import "del-osx-artifacts/contracts/PhoneLinkCollection.sol";
 import "dms-osx-artifacts/contracts/ledger/Ledger.sol";
 import "dms-osx-artifacts/contracts/shop/Shop.sol";
 import "dms-osx-artifacts/contracts/validator/Validator.sol";
-import "dms-osx-artifacts/contracts/token/Token.sol";
+import "loyalty-tokens/contracts/LoyaltyToken.sol";

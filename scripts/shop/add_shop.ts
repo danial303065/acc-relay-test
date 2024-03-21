@@ -25,11 +25,12 @@ async function main() {
     const shopWallet = new Wallet(userData[userIndex].privateKey);
 
     console.log("상점 데이타를 생성합니다.");
-    const shopId = ContractUtils.getShopId(shopWallet.address);
+    const shopId = ContractUtils.getShopId(shopWallet.address, 0);
     const contract = await getShopContract();
     const account: string = shopWallet.address;
     const nonce = await contract.nonceOf(shopWallet.address);
-    const signature = await ContractUtils.signShop(shopWallet, shopId, nonce);
+    const message = ContractUtils.getShopAccountMessage(shopId, shopWallet.address, nonce);
+    const signature = await ContractUtils.signMessage(shopWallet, message);
     const currency = "krw";
     const name = "Shop New 10";
     const param = {

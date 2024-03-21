@@ -3,4 +3,7 @@
 /* eslint-disable */
 export * as openzeppelin from "./@openzeppelin";
 export * as delOsxArtifacts from "./del-osx-artifacts";
+export * as dmsBridgeContracts from "./dms-bridge-contracts";
 export * as dmsOsxArtifacts from "./dms-osx-artifacts";
+export * as loyaltyTokens from "./loyalty-tokens";
+export * as multisigWalletContracts from "./multisig-wallet-contracts";

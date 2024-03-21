@@ -23,6 +23,18 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
+export declare namespace ICurrencyRate {
+  export type CurrencyDataStruct = {
+    symbol: PromiseOrValue<string>;
+    rate: PromiseOrValue<BigNumberish>;
+  };
+
+  export type CurrencyDataStructOutput = [string, BigNumber] & {
+    symbol: string;
+    rate: BigNumber;
+  };
+}
+
 export interface ICurrencyRateInterface extends utils.Interface {
   functions: {
     "convertCurrency(uint256,string,string)": FunctionFragment;
@@ -32,7 +44,7 @@ export interface ICurrencyRateInterface extends utils.Interface {
     "convertTokenToPoint(uint256)": FunctionFragment;
     "get(string)": FunctionFragment;
     "multiple()": FunctionFragment;
-    "set(string,uint256)": FunctionFragment;
+    "set(uint256,(string,uint256)[],bytes[])": FunctionFragment;
     "support(string)": FunctionFragment;
   };
 
@@ -80,7 +92,11 @@ export interface ICurrencyRateInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "multiple", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "set",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      ICurrencyRate.CurrencyDataStruct[],
+      PromiseOrValue<BytesLike>[]
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "support",
@@ -179,8 +195,9 @@ export interface ICurrencyRate extends BaseContract {
     multiple(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     set(
-      _symbol: PromiseOrValue<string>,
-      _price: PromiseOrValue<BigNumberish>,
+      _timestamp: PromiseOrValue<BigNumberish>,
+      _data: ICurrencyRate.CurrencyDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -227,8 +244,9 @@ export interface ICurrencyRate extends BaseContract {
   multiple(overrides?: CallOverrides): Promise<BigNumber>;
 
   set(
-    _symbol: PromiseOrValue<string>,
-    _price: PromiseOrValue<BigNumberish>,
+    _timestamp: PromiseOrValue<BigNumberish>,
+    _data: ICurrencyRate.CurrencyDataStruct[],
+    _signatures: PromiseOrValue<BytesLike>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -275,8 +293,9 @@ export interface ICurrencyRate extends BaseContract {
     multiple(overrides?: CallOverrides): Promise<BigNumber>;
 
     set(
-      _symbol: PromiseOrValue<string>,
-      _price: PromiseOrValue<BigNumberish>,
+      _timestamp: PromiseOrValue<BigNumberish>,
+      _data: ICurrencyRate.CurrencyDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -326,8 +345,9 @@ export interface ICurrencyRate extends BaseContract {
     multiple(overrides?: CallOverrides): Promise<BigNumber>;
 
     set(
-      _symbol: PromiseOrValue<string>,
-      _price: PromiseOrValue<BigNumberish>,
+      _timestamp: PromiseOrValue<BigNumberish>,
+      _data: ICurrencyRate.CurrencyDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -375,8 +395,9 @@ export interface ICurrencyRate extends BaseContract {
     multiple(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     set(
-      _symbol: PromiseOrValue<string>,
-      _price: PromiseOrValue<BigNumberish>,
+      _timestamp: PromiseOrValue<BigNumberish>,
+      _data: ICurrencyRate.CurrencyDataStruct[],
+      _signatures: PromiseOrValue<BytesLike>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

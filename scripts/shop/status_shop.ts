@@ -6,7 +6,7 @@ import * as fs from "fs";
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
-    const ACCESS_KEY = process.env.ACCESS_KEY || "";
+    const ACCESS_KEY = process.env.RELAY_ACCESS_KEY || "";
     const shopData: IShopData[] = [];
 
     console.log("상점데이타를 로딩합니다.");
@@ -17,7 +17,7 @@ async function main() {
     const shopId = shopData[shopIndex].shopId;
     const param = {
         shopId,
-        status: 2,
+        status: 1,
     };
 
     console.log("상점 데이타의 변경을 요청합니다.");
