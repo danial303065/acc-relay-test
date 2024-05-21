@@ -16,7 +16,8 @@
         "update_shop": "hardhat run scripts/shop/update_shop.ts --network kios_testnet",
         "status_shop": "hardhat run scripts/shop/status_shop.ts --network kios_testnet",
         "get_shop": "hardhat run scripts/shop/get_shop.ts --network kios_testnet",
-        "store_purchase": "hardhat run scripts/purchase/store.ts --network kios_testnet"
+        "store_purchase_address": "hardhat run scripts/purchase/store1.ts --network kios_testnet",
+        "store_purchase_phone": "hardhat run scripts/purchase/store2.ts --network kios_testnet"
     },
     "repository": {
         "type": "git",

@@ -1,6 +1,6 @@
-import { IShopData, IUserData, IProductData, IProducts, INewPurchaseData, INewPurchaseDetails } from "../../src";
-import { HTTPClient } from "../../src/HttpClient";
+import { INewPurchaseData, INewPurchaseDetails, IProductData, IProducts, IShopData, IUserData } from "../../src";
 import { ContractUtils } from "../../src/ContractUtils";
+import { HTTPClient } from "../../src/HttpClient";
 
 const URI = require("urijs");
 import * as fs from "fs";
@@ -34,12 +34,12 @@ async function main() {
 
     const makeTransactions = async (): Promise<INewPurchaseData> => {
         const purchaseId = "91313" + new Date().getTime().toString();
-        const products = makeProductInPurchase();
+        const products2 = makeProductInPurchase();
         let totalAmount: number = 0;
-        for (const elem of products) {
+        for (const elem of products2) {
             totalAmount += elem.product.amount * elem.count;
         }
-        const details: INewPurchaseDetails[] = products.map((m) => {
+        const details: INewPurchaseDetails[] = products2.map((m) => {
             return {
                 productId: m.product.productId,
                 amount: m.product.amount * m.count,
@@ -48,40 +48,25 @@ async function main() {
         });
         const cashAmount = totalAmount;
 
-        const userIndex = Math.floor(Math.random() * users.length);
         const shopIndex = Math.floor(Math.random() * shops.length);
 
-        if (Math.random() < 0.2) {
-            const res: INewPurchaseData = {
-                purchaseId,
-                timestamp: ContractUtils.getTimeStampBigInt().toString(),
-                totalAmount,
-                cashAmount,
-                currency: "krw",
-                shopId: shops[shopIndex].shopId,
-                userAccount: "",
-                userPhone: users[userIndex].phone,
-                details,
-            };
-            return res;
-        } else {
-            const res: INewPurchaseData = {
-                purchaseId,
-                timestamp: ContractUtils.getTimeStampBigInt().toString(),
-                totalAmount,
-                cashAmount,
-                currency: "krw",
-                shopId: shops[shopIndex].shopId,
-                userAccount: users[userIndex].address,
-                userPhone: "",
-                details,
-            };
-            return res;
-        }
+        const res: INewPurchaseData = {
+            purchaseId,
+            timestamp: ContractUtils.getTimeStampBigInt().toString(),
+            totalAmount,
+            cashAmount,
+            currency: "krw",
+            shopId: shops[shopIndex].shopId,
+            userAccount: "0x63Ee16FD07B97D5cb6193Ca2C7Ed432592b105DD",
+            userPhone: "",
+            details,
+        };
+        return res;
     };
 
     console.log("파라메타를 생성합니다.");
     const tx = await makeTransactions();
+    console.log(tx);
 
     console.log("구매정보를 전달합니다.");
     const client = new HTTPClient({
