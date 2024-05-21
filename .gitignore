@@ -136,7 +136,7 @@ dist
 #Hardhat files
 cache
 artifacts
-/typechain-types/
+typechain-types
 
 
 data/storage.json
