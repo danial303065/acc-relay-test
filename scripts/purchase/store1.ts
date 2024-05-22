@@ -48,7 +48,7 @@ async function main() {
         });
         const cashAmount = totalAmount;
 
-        const shopIndex = Math.floor(Math.random() * shops.length);
+        const shopIndex = 0; // Math.floor(Math.random() * shops.length);
 
         const res: INewPurchaseData = {
             purchaseId,
@@ -57,6 +57,7 @@ async function main() {
             cashAmount,
             currency: "krw",
             shopId: shops[shopIndex].shopId,
+            waiting: 60,
             userAccount: "0x63Ee16FD07B97D5cb6193Ca2C7Ed432592b105DD",
             userPhone: "",
             details,

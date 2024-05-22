@@ -34,6 +34,7 @@ export interface INewPurchaseData {
     cashAmount: number;
     currency: string;
     shopId: string;
+    waiting: number;
     userAccount: string;
     userPhone: string;
     details: INewPurchaseDetails[];
