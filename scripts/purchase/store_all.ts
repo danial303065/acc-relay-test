@@ -21,7 +21,7 @@ async function main() {
 
     console.log("데이타를 로딩합니다.");
     users.push(...(JSON.parse(fs.readFileSync("./data/users.json", "utf8")) as IUserData[]));
-    users.push(...(JSON.parse(fs.readFileSync("./data/users.json", "utf8")) as IUserData[]));
+    users.push(...(JSON.parse(fs.readFileSync("./data/users_mobile.json", "utf8")) as IUserData[]));
     shops.push(...(JSON.parse(fs.readFileSync("./data/shops.json", "utf8")) as IShopData[]));
 
     const makeProductInPurchase = (): IProducts[] => {
