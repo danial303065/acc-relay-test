@@ -2908,11 +2908,6 @@ define-properties@^1.1.3, define-properties@^1.2.0, define-properties@^1.2.1:
     has-property-descriptors "^1.0.0"
     object-keys "^1.1.1"
 
-del-osx-artifacts@^2.2.0, del-osx-artifacts@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/del-osx-artifacts/-/del-osx-artifacts-2.3.0.tgz#eae1293951b2e857056d5f6253485ba92c5a29f5"
-  integrity sha512-W5/WSXqitJ6qT8QWFcO3JQpWlgYQTMrGdsG8BUER80SFPtzOt6AiLb0veLqqShSc9JamFZOKL+H+pApyXUfjvw==
-
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -2973,20 +2968,27 @@ discontinuous-range@1.0.0:
   resolved "https://registry.yarnpkg.com/discontinuous-range/-/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"
   integrity sha512-c68LpLbO+7kP/b1Hr1qs8/BJ09F5khZGTxqxZuhzxpmwJKOgRFHJWIb9/KmqnqHhLdO55aOxFH/EGBvUQbL/RQ==
 
-dms-bridge-contracts@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/dms-bridge-contracts/-/dms-bridge-contracts-1.2.2.tgz#53d1b60b77fda5f712a2b09003a29ee0ec746435"
-  integrity sha512-VAS6MlqmrObR24wODzPcG3XR7VqlYIFdj72ei9iu66f17fXQ1JICbqQNIn9cfEK5e+DWYsvN+SyZmAV4NuKbrg==
-
-dms-osx-artifacts@^2.10.2:
-  version "2.10.2"
-  resolved "https://registry.yarnpkg.com/dms-osx-artifacts/-/dms-osx-artifacts-2.10.2.tgz#2e34ff5a46ad762e9d92cf095899ecc226203b65"
-  integrity sha512-N044Uo04XLNMR+IQYxejFKxAQuBvrcizgK4jMOO67sXL5a3Lh+mARFR0u0MHZZqz1tkA4NQTeEEHwtFSbg5btA==
+dms-bridge-contracts-v2@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/dms-bridge-contracts-v2/-/dms-bridge-contracts-v2-2.0.0.tgz#d43720c5679bb48a4db0dc9a0167b990a10c7198"
+  integrity sha512-rapcN25LVOl4BF1hdnPr9VmW95+QewIO+ID852Sy3eeCOSvZlHcB2k2P1a8hLxnI6+NixCczvzE/gUFQUxx3Zg==
   dependencies:
-    del-osx-artifacts "^2.3.0"
-    dms-bridge-contracts "^1.2.2"
-    loyalty-tokens "^1.0.5"
-    multisig-wallet-contracts "^1.1.0"
+    "@openzeppelin/contracts" "^4.9.5"
+    "@openzeppelin/contracts-upgradeable" "^4.9.5"
+    "@openzeppelin/hardhat-upgrades" "^1.28.0"
+    loyalty-tokens "~2.0.0"
+
+dms-contracts-v2@~2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/dms-contracts-v2/-/dms-contracts-v2-2.0.2.tgz#42a20b5bee9646fbe0ba54b77d36fed1be9d6483"
+  integrity sha512-ihkr7xmCDpNQhAKDHz24U3A26vKdstk8eqj8LUH8GOTPJCdTGVzjj4xTKFvZmLJglX6ZX1aD++i9lwuMVrMRuA==
+  dependencies:
+    "@openzeppelin/contracts" "^4.9.5"
+    "@openzeppelin/contracts-upgradeable" "^4.9.5"
+    "@openzeppelin/hardhat-upgrades" "^1.28.0"
+    dms-bridge-contracts-v2 "~2.0.0"
+    loyalty-tokens "~2.0.0"
+    multisig-wallet-contracts "~2.0.0"
 
 dom-walk@^0.1.0:
   version "0.1.2"
@@ -5135,10 +5137,13 @@ lowercase-keys@^3.0.0:
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-3.0.0.tgz#c5e7d442e37ead247ae9db117a9d0a467c89d4f2"
   integrity sha512-ozCC6gdQ+glXOQsveKD0YsDy8DSQFjDTz4zyzEHNV5+JP5D62LmfDZ6o1cycFx9ouG940M5dE8C8CTewdj2YWQ==
 
-loyalty-tokens@^1.0.5:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/loyalty-tokens/-/loyalty-tokens-1.0.6.tgz#8d3c4de7b034e4e9648dc924dcf4504d658d1bb0"
-  integrity sha512-t55ypKkfdlMUBbdrGfyHVzAy+l6bAFeziNQA1O/ptIeCMRGy5Z09CvrgXwALC90uGpIWNnN5Y8O9inL6DSRk9w==
+loyalty-tokens@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/loyalty-tokens/-/loyalty-tokens-2.0.0.tgz#5e9e24674598fd8cdf43f14462ff8ca898da19f2"
+  integrity sha512-XDKfITphWr+DYSO0RGl/Kec8WA7UQ7odskcmllK0Kr2eomX+jkmKa19tNEKVsD0IBHx3TsaIMqLp57MPRMG7fg==
+  dependencies:
+    "@openzeppelin/contracts" "^4.9.5"
+    multisig-wallet-contracts "^2.0.0"
 
 lru-cache@^5.1.1:
   version "5.1.1"
@@ -5514,10 +5519,12 @@ multihashes@^0.4.15, multihashes@~0.4.15:
     multibase "^0.7.0"
     varint "^5.0.0"
 
-multisig-wallet-contracts@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/multisig-wallet-contracts/-/multisig-wallet-contracts-1.1.0.tgz#680b28bdbf9b2860bb853abdbe2b5910b1b0dfee"
-  integrity sha512-dJCxmOBqZZicKjshiC9SS17XPZJWSU/FpZ8eCw1WWTH08jjMudRaKMtJ/l0pjadFRUQ/wDhCUInIixoGhHyCyg==
+multisig-wallet-contracts@^2.0.0, multisig-wallet-contracts@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/multisig-wallet-contracts/-/multisig-wallet-contracts-2.0.0.tgz#b9b57eb487c5e93d966b9acda10dea28924c69f1"
+  integrity sha512-knROI/F5ujaj2uRiyctC2BfMQ4gAb7HAou3qODvPP+YDhF5FxtHGu8mjFoFZZf1sILFMD8gsg1pl2vNV7JCBJA==
+  dependencies:
+    "@openzeppelin/contracts" "^4.9.5"
 
 mybatis-mapper@^0.7.1:
   version "0.7.1"

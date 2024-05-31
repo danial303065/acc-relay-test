@@ -12,7 +12,6 @@ export interface IUserData {
     phone: string;
     address: string;
     privateKey: string;
-    loyaltyType: number;
 }
 
 export interface IProductData {

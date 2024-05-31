@@ -1,5 +1,4 @@
 import { IShopData, IUserData } from "../../src";
-import { Shop } from "../../typechain-types";
 import { HTTPClient } from "../../src/HttpClient";
 
 import * as hre from "hardhat";
