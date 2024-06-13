@@ -17,13 +17,8 @@ function getPurchaseId(): string {
 async function main() {
     const STORE_PURCHASE_ENDPOINT = process.env.STORE_PURCHASE_ENDPOINT || "";
     const ACCESS_KEY = process.env.STORE_PURCHASE_ACCESS_KEY || "";
-    const shops: IShopData[] = [];
     const userInfo = Helper.loadUserInfo();
-
-    console.log("데이타를 로딩합니다.");
-    shops.push(...(JSON.parse(fs.readFileSync("./data/shops.json", "utf8")) as IShopData[]));
-
-    const shopId = shops[0].shopId;
+    const shopInfo = Helper.loadShopInfo();
 
     const makeTransactions = async (): Promise<INewPurchaseData> => {
         const purchaseId = getPurchaseId();
@@ -46,7 +41,7 @@ async function main() {
             totalAmount,
             cashAmount,
             currency: process.env.CURRENCY || "php",
-            shopId: shopId,
+            shopId: shopInfo.shopId,
             waiting: 10,
             userAccount: userInfo.wallet.address,
             userPhone: "",

@@ -1,12 +1,9 @@
-import { IUserData } from "../../src";
 import { ContractUtils } from "../../src/ContractUtils";
 import { Shop } from "../../typechain-types";
 import { HTTPClient } from "../../src/HttpClient";
-import { Wallet } from "@ethersproject/wallet";
 
 import * as hre from "hardhat";
 import URI from "urijs";
-import * as fs from "fs";
 import { Helper } from "../utils";
 
 async function getShopContract(): Promise<Shop> {
@@ -19,16 +16,15 @@ async function main() {
     const shopInfo = Helper.loadShopInfo();
 
     console.log("상점 데이타를 생성합니다.");
-    const shopId = shopInfo.shopId;
     const contract = await getShopContract();
     const account: string = shopInfo.wallet.address;
     const nonce = await contract.nonceOf(shopInfo.wallet.address);
-    const message = ContractUtils.getShopAccountMessage(shopId, shopInfo.wallet.address, nonce);
+    const message = ContractUtils.getShopAccountMessage(shopInfo.shopId, shopInfo.wallet.address, nonce);
     const signature = await ContractUtils.signMessage(shopInfo.wallet, message);
     const currency = "php";
     const name = "Shop New 10";
     const param = {
-        shopId,
+        shopId: shopInfo.shopId,
         name,
         currency,
         account,
