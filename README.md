@@ -90,7 +90,7 @@ npx hardhat run scripts/account/temporary.ts --network sidechain_devnet
 #### - (2) 결제 시작 (키오스크)
 
 ```shell
-npx hardhat run scripts/use/new/open.ts --network sidechain_devne
+npx hardhat run scripts/use/new/open.ts --network sidechain_devnet
 ```
 
 #### - (3) 결제 승인 (사용자용 앱)
@@ -213,7 +213,7 @@ npx hardhat run scripts/account/temporary.ts --network sidechain_devnet
 #### - (2) 결제 시작 (키오스크)
 
 ```shell
-npx hardhat run scripts/use/new/open.ts --network sidechain_devne
+npx hardhat run scripts/use/new/open.ts --network sidechain_devnet
 ```
 
 #### - (3) 결제 승인 (사용자용 앱)
