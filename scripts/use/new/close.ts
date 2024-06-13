@@ -1,6 +1,6 @@
-import { HTTPClient } from "../../src/HttpClient";
-import { getPaymentId } from "../../src/helper";
-const URI = require("urijs");
+import { HTTPClient } from "../../../src/HttpClient";
+import { Helper } from "../../utils";
+import URI from "urijs";
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
@@ -11,10 +11,10 @@ async function main() {
             Authorization: ACCESS_KEY,
         },
     });
-    const paymentId = getPaymentId();
+    const paymentId = Helper.getPaymentId();
 
-    console.log("취소결제를 종료합니다.");
-    const url = URI(RELAY_ENDPOINT).directory("/v1/payment/cancel").filename("close").toString();
+    console.log("결제를 종료합니다.");
+    const url = URI(RELAY_ENDPOINT).directory("/v1/payment/new").filename("close").toString();
     const response = await client.post(url, {
         paymentId,
         confirm: true,

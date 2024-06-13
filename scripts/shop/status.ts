@@ -1,7 +1,7 @@
-import { IShopData, IUserData } from "../../src";
+import { IShopData } from "../../src";
 import { HTTPClient } from "../../src/HttpClient";
 
-const URI = require("urijs");
+import URI from "urijs";
 import * as fs from "fs";
 
 async function main() {

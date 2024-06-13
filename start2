@@ -1,7 +1,0 @@
-#!/bin/bash
-
-yarn run new_open
-
-sleep 7
-
-yarn run new_close

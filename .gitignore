@@ -140,3 +140,5 @@ typechain-types
 
 
 data/storage.json
+data/temporary_account.json
+

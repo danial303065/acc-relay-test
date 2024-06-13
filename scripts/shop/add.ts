@@ -5,8 +5,9 @@ import { HTTPClient } from "../../src/HttpClient";
 import { Wallet } from "@ethersproject/wallet";
 
 import * as hre from "hardhat";
-const URI = require("urijs");
+import URI from "urijs";
 import * as fs from "fs";
+import { Helper } from "../utils";
 
 async function getShopContract(): Promise<Shop> {
     const shopFactory = await hre.ethers.getContractFactory("Shop");
@@ -15,23 +16,16 @@ async function getShopContract(): Promise<Shop> {
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
-    const userData: IUserData[] = [];
-
-    console.log("사용자의 데이터를 로딩합니다.");
-    console.log("사용자의 데이터중 지갑을 상점주의 테스트 지갑으로 사용합니다.");
-    userData.push(...(JSON.parse(fs.readFileSync("./data/users.json", "utf8")) as IUserData[]));
-    const userIndex = 60;
-
-    const shopWallet = new Wallet(userData[userIndex].privateKey);
+    const shopInfo = Helper.loadShopInfo();
 
     console.log("상점 데이타를 생성합니다.");
-    const shopId = ContractUtils.getShopId(shopWallet.address, 0);
+    const shopId = shopInfo.shopId;
     const contract = await getShopContract();
-    const account: string = shopWallet.address;
-    const nonce = await contract.nonceOf(shopWallet.address);
-    const message = ContractUtils.getShopAccountMessage(shopId, shopWallet.address, nonce);
-    const signature = await ContractUtils.signMessage(shopWallet, message);
-    const currency = "krw";
+    const account: string = shopInfo.wallet.address;
+    const nonce = await contract.nonceOf(shopInfo.wallet.address);
+    const message = ContractUtils.getShopAccountMessage(shopId, shopInfo.wallet.address, nonce);
+    const signature = await ContractUtils.signMessage(shopInfo.wallet, message);
+    const currency = "php";
     const name = "Shop New 10";
     const param = {
         shopId,

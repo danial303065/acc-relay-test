@@ -1,16 +1,16 @@
-import { BOACoin } from "../../src/Amount";
-import { HTTPClient } from "../../src/HttpClient";
-import { getPaymentId } from "../../src/helper";
+import { BOACoin } from "../../../src/Amount";
+import { HTTPClient } from "../../../src/HttpClient";
+import { Helper } from "../../utils";
 
 import { BigNumber } from "ethers";
 
-const URI = require("urijs");
+import URI from "urijs";
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const ACCESS_KEY = process.env.RELAY_ACCESS_KEY || "";
 
-    const paymentId = getPaymentId();
+    const paymentId = Helper.getPaymentId();
 
     const client = new HTTPClient({
         headers: {

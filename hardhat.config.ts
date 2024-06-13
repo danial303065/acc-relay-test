@@ -80,14 +80,19 @@ const config = {
             chainId: 24680,
             accounts: getAccounts(),
         },
-        kios_mainnet: {
-            url: process.env.KIOS_MAIN_NET_URL || "",
+        sidechain_mainnet: {
+            url: process.env.SIDE_CHAIN_MAIN_NET_URL || "",
             chainId: 215110,
             accounts: getAccounts(),
         },
-        kios_testnet: {
-            url: process.env.KIOS_TEST_NET_URL || "",
+        sidechain_testnet: {
+            url: process.env.SIDE_CHAIN_TEST_NET_URL || "",
             chainId: 215115,
+            accounts: getAccounts(),
+        },
+        sidechain_devnet: {
+            url: process.env.SIDE_CHAIN_DEV_NET_URL || "",
+            chainId: 24680,
             accounts: getAccounts(),
         },
     },

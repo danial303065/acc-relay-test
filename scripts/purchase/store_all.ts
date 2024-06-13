@@ -2,7 +2,7 @@ import { INewPurchaseData, INewPurchaseDetails, IProductData, IProducts, IShopDa
 import { ContractUtils } from "../../src/ContractUtils";
 import { HTTPClient } from "../../src/HttpClient";
 
-const URI = require("urijs");
+import URI from "urijs";
 import * as fs from "fs";
 const beautify = require("beautify");
 

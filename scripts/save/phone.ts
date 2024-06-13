@@ -4,63 +4,52 @@ import { HTTPClient } from "../../src/HttpClient";
 
 import URI from "urijs";
 import * as fs from "fs";
+import { Helper } from "../utils";
 const beautify = require("beautify");
+
+let purchaseSequence = 0;
+function getPurchaseId(): string {
+    const res = "P" + new Date().getTime().toString().padStart(10, "0") + purchaseSequence.toString().padStart(5, "0");
+    purchaseSequence++;
+    return res;
+}
 
 async function main() {
     const STORE_PURCHASE_ENDPOINT = process.env.STORE_PURCHASE_ENDPOINT || "";
     const ACCESS_KEY = process.env.STORE_PURCHASE_ACCESS_KEY || "";
     const shops: IShopData[] = [];
-    const products: IProductData[] = [];
-    const users: IUserData[] = [];
+    const userInfo = Helper.loadUserInfo();
 
     console.log("데이타를 로딩합니다.");
-    users.push(...(JSON.parse(fs.readFileSync("./data/users.json", "utf8")) as IUserData[]));
     shops.push(...(JSON.parse(fs.readFileSync("./data/shops.json", "utf8")) as IShopData[]));
-    products.push(...(JSON.parse(fs.readFileSync("./data/products.json", "utf8")) as IProductData[]));
 
-    const makeProductInPurchase = (): IProducts[] => {
-        const res: IProducts[] = [];
-        const count = Math.floor(Math.random() * 10 + 1);
-        for (let idx = 0; idx < count; idx++) {
-            const i = Math.floor(Math.random() * products.length);
-            const l = Math.floor(Math.random() * 2 + 1);
-            res.push({
-                product: products[i],
-                count: l,
-            });
-        }
-        return res;
-    };
+    const shopId = shops[0].shopId;
 
     const makeTransactions = async (): Promise<INewPurchaseData> => {
-        const purchaseId = "91313" + new Date().getTime().toString();
-        const products2 = makeProductInPurchase();
+        const purchaseId = getPurchaseId();
+        const details: INewPurchaseDetails[] = [
+            {
+                productId: "2020051310000000",
+                amount: 100_000_000,
+                providePercent: 10,
+            },
+        ];
         let totalAmount: number = 0;
-        for (const elem of products2) {
-            totalAmount += elem.product.amount * elem.count;
+        for (const elem of details) {
+            totalAmount += elem.amount;
         }
-        const details: INewPurchaseDetails[] = products2.map((m) => {
-            return {
-                productId: m.product.productId,
-                amount: m.product.amount * m.count,
-                providePercent: m.product.providerPercent,
-            };
-        });
         const cashAmount = totalAmount;
-
-        const userIndex = Math.floor(Math.random() * users.length);
-        const shopIndex = Math.floor(Math.random() * shops.length);
 
         const res: INewPurchaseData = {
             purchaseId,
-            timestamp: ContractUtils.getTimeStampBigInt().toString(),
+            timestamp: ContractUtils.getTimeStamp().toString(),
             totalAmount,
             cashAmount,
-            currency: "krw",
-            shopId: shops[shopIndex].shopId,
+            currency: process.env.CURRENCY || "php",
+            shopId: shopId,
             waiting: 10,
             userAccount: "",
-            userPhone: users[userIndex].phone,
+            userPhone: userInfo.phone,
             details,
         };
         return res;
