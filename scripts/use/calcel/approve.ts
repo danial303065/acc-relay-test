@@ -17,7 +17,7 @@ async function main() {
     console.log("결제취소를 승인합니다.");
     const chainInfo = await Helper.getChainInfoOfSideChain();
     console.log(`chain info : ${chainInfo}`);
-    const nonce = await Helper.getNonceOfLedger(userInfo.wallet.address);
+    const nonce = await Helper.getNonceOfLedger(shopInfo.wallet.address);
     console.log(`nonce : ${nonce.toString()}`);
     const signature = await ContractUtils.signLoyaltyCancelPayment(
         shopInfo.wallet,
