@@ -3,29 +3,13 @@ import "@nomiclabs/hardhat-waffle";
 import "@openzeppelin/hardhat-upgrades";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
-import "solidity-coverage";
-import "solidity-docgen";
 
 import * as dotenv from "dotenv";
-import { Wallet } from "ethers";
 
 dotenv.config({ path: "env/.env" });
 
-import { HardhatAccount } from "./src/HardhatAccount";
-
 function getAccounts() {
     const accounts: string[] = [];
-
-    while (accounts.length < 70) {
-        accounts.push(Wallet.createRandom().privateKey);
-    }
-
-    if (HardhatAccount.keys.length === 0) {
-        for (const account of accounts) {
-            HardhatAccount.keys.push(account);
-        }
-    }
-
     return accounts;
 }
 

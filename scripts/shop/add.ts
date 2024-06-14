@@ -6,6 +6,8 @@ import * as hre from "hardhat";
 import URI from "urijs";
 import { Helper } from "../utils";
 
+const beautify = require("beautify");
+
 async function getShopContract(): Promise<Shop> {
     const shopFactory = await hre.ethers.getContractFactory("Shop");
     return shopFactory.attach(process.env.SHOP_CONTRACT_ADDRESS || "");
@@ -38,7 +40,7 @@ async function main() {
 
     console.log("처리결과입니다.");
     console.log(response.data.code);
-    console.log(response.data.data);
+    console.log(beautify(JSON.stringify(response.data.data), { format: "json" }));
 }
 
 main().catch((error) => {

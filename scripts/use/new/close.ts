@@ -2,6 +2,8 @@ import { HTTPClient } from "../../../src/HttpClient";
 import { Helper } from "../../utils";
 import URI from "urijs";
 
+const beautify = require("beautify");
+
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const ACCESS_KEY = process.env.RELAY_ACCESS_KEY || "";
@@ -20,11 +22,13 @@ async function main() {
         confirm: true,
     });
     if (response.data.code !== 0) {
-        console.error(response.data.error.message);
+        console.error("Error!", response.data.error.message);
         process.exit(response.data.code);
     }
 
-    console.log(response.data.data);
+    console.log("처리결과입니다.");
+    console.log(response.data.code);
+    console.log(beautify(JSON.stringify(response.data.data), { format: "json" }));
 }
 
 // We recommend this pattern to be able to use async/await everywhere

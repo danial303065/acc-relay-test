@@ -1,4 +1,3 @@
-import { IShopData } from "../../src";
 import { HTTPClient } from "../../src/HttpClient";
 
 import URI from "urijs";

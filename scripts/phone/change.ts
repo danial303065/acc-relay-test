@@ -3,6 +3,8 @@ import { ContractUtils } from "../../src/ContractUtils";
 import URI from "urijs";
 import { HTTPClient } from "../../src/HttpClient";
 
+const beautify = require("beautify");
+
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const userInfo = Helper.loadUserInfo();
@@ -11,7 +13,7 @@ async function main() {
     console.log(`registered: ${phoneHash} - ${account}`);
 
     const chainInfo = await Helper.getChainInfoOfSideChain();
-    console.log(`chain info : ${chainInfo}`);
+    console.log(`chain info : ${chainInfo.network.chainId}`);
     const nonce = await Helper.getNonceOfLedger(userInfo.wallet.address);
     console.log(`nonce : ${nonce.toString()}`);
     const signature = await ContractUtils.signChangePayablePoint(
@@ -29,11 +31,13 @@ async function main() {
     const client = new HTTPClient();
     const response = await client.post(url, param);
     if (response.data.code !== 0) {
-        console.error(response.data.error.message);
+        console.error("Error!", response.data.error.message);
         process.exit(response.data.code);
     }
 
-    console.log(response.data.data);
+    console.log("처리결과입니다.");
+    console.log(response.data.code);
+    console.log(beautify(JSON.stringify(response.data.data), { format: "json" }));
 }
 
 // We recommend this pattern to be able to use async/await everywhere

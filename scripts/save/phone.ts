@@ -3,7 +3,6 @@ import { ContractUtils } from "../../src/ContractUtils";
 import { HTTPClient } from "../../src/HttpClient";
 
 import URI from "urijs";
-import * as fs from "fs";
 import { Helper } from "../utils";
 const beautify = require("beautify");
 

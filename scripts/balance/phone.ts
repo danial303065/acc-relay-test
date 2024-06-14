@@ -7,8 +7,6 @@ import { BigNumber } from "ethers";
 
 import URI from "urijs";
 
-const beautify = require("beautify");
-
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const userInfo = Helper.loadUserInfo();
@@ -17,12 +15,14 @@ async function main() {
     const url = URI(RELAY_ENDPOINT).directory(`/v1/ledger/balance/phone/${userInfo.phone}`).toString();
     const response = await client.get(url);
     if (response.data.code !== 0) {
-        console.error(response.data.error.message);
+        console.error("Error!", response.data.error.message);
         process.exit(response.data.code);
     }
-    const balance: BOACoin = new BOACoin(BigNumber.from(response.data.data.point.balance));
-    console.log(`balance : ${balance.toDisplayString(true, 2)}`);
-    console.log(beautify(JSON.stringify(response.data.data), { format: "json" }));
+    const pointBalance: BOACoin = new BOACoin(BigNumber.from(response.data.data.point.balance));
+    const tokenBalance: BOACoin = new BOACoin(BigNumber.from(response.data.data.token.balance));
+    console.log(`account : ${response.data.data.account}`);
+    console.log(`Point balance : ${pointBalance.toDisplayString(true, 2)}`);
+    console.log(`Token balance : ${tokenBalance.toDisplayString(true, 2)}`);
 }
 
 main().catch((error) => {

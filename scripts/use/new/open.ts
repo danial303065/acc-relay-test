@@ -6,6 +6,8 @@ import { BigNumber } from "ethers";
 
 import URI from "urijs";
 
+const beautify = require("beautify");
+
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
     const ACCESS_KEY = process.env.RELAY_ACCESS_KEY || "";
@@ -52,15 +54,16 @@ async function main() {
     };
     const response2 = await client.post(url2, params);
     if (response2.data.code !== 0) {
-        console.error(response2.data.error.message);
+        console.error("Error!", response2.data.error.message);
         process.exit(response2.data.code);
     }
 
     paymentId = response2.data.data.paymentId;
     Helper.setPaymentId(paymentId);
-    console.log(`account: ${userInfo.wallet.address}`);
-    console.log(`amount: ${new BOACoin(purchase.amount).toDisplayString(true, 2)}`);
-    console.log(`paymentId: ${paymentId}`);
+
+    console.log("처리결과입니다.");
+    console.log(response2.data.code);
+    console.log(beautify(JSON.stringify(response2.data.data), { format: "json" }));
 }
 
 // We recommend this pattern to be able to use async/await everywhere

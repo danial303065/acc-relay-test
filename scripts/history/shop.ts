@@ -1,26 +1,22 @@
-import { HTTPClient } from "../../../src/HttpClient";
-import { Helper } from "../../utils";
+import { HTTPClient } from "../../src/HttpClient";
+import { Helper } from "../utils";
 import URI from "urijs";
 
 const beautify = require("beautify");
 
 async function main() {
     const RELAY_ENDPOINT = process.env.RELAY_ENDPOINT || "";
-    const ACCESS_KEY = process.env.RELAY_ACCESS_KEY || "";
+    const shopInfo = Helper.loadShopInfo();
 
-    const client = new HTTPClient({
-        headers: {
-            Authorization: ACCESS_KEY,
-        },
-    });
-    const paymentId = Helper.getPaymentId();
-
-    console.log("취소결제를 종료합니다.");
-    const url = URI(RELAY_ENDPOINT).directory("/v1/payment/cancel").filename("close").toString();
-    const response = await client.post(url, {
-        paymentId,
-        confirm: true,
-    });
+    const client = new HTTPClient();
+    const url = URI(RELAY_ENDPOINT)
+        .directory("/v1/shop/history")
+        .filename(shopInfo.shopId)
+        .addQuery("pageNumber", 1)
+        .addQuery("pageSize", 100)
+        .addQuery("actions", "1,2,3")
+        .toString();
+    const response = await client.get(url);
     if (response.data.code !== 0) {
         console.error("Error!", response.data.error.message);
         process.exit(response.data.code);
