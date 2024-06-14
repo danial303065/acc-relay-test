@@ -11,7 +11,7 @@ async function main() {
     const userInfo = Helper.loadUserInfo();
 
     const chainInfo = await Helper.getChainInfoOfSideChain();
-    console.log(`chain info : ${chainInfo}`);
+    console.log(`chain info : ${chainInfo.network.chainId}`);
     const nonce = await Helper.getNonceOfLedger(userInfo.wallet.address);
     console.log(`nonce : ${nonce.toString()}`);
     const message = ContractUtils.getAccountMessage(userInfo.wallet.address, nonce, chainInfo.network.chainId);

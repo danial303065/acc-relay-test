@@ -244,4 +244,15 @@ export class Helper {
         const res = response.data;
         return res.data.phone;
     }
+
+    public static async getNonceOfShop(account: string): Promise<BigNumber> {
+        const client = new HTTPClient();
+        const url = URI(Helper.RELAY_ENDPOINT).directory(`/v1/shop/nonce/${account}`).toString();
+        const response = await client.get(url);
+        if (response.data.code !== 0) {
+            throw new Error(response.data.error.message);
+        }
+        const res = response.data;
+        return BigNumber.from(res.data.nonce);
+    }
 }

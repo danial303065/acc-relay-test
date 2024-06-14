@@ -42,7 +42,7 @@ async function main() {
             cashAmount,
             currency: process.env.CURRENCY || "php",
             shopId: shopInfo.shopId,
-            waiting: 10,
+            waiting: 0,
             userAccount: userInfo.wallet.address,
             userPhone: "",
             details,
