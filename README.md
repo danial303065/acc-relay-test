@@ -1,4 +1,4 @@
-# DMS Relay Test
+# ACC Relay Test
 
 A server that receives transactions and then stores it in a blockchain
 
@@ -14,8 +14,8 @@ npm install -g yarn
 ## Install Program
 
 ```shell
-git clone https://github.com/MichaelKim20/dms-relay-test.git
-cd dms-relay-test
+git clone https://github.com/danial303065/acc-relay-test.git
+cd acc-relay-test
 yarn install
 cp env/.env.sample env/.env
 yarn build
